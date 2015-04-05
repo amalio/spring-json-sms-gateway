@@ -6,6 +6,7 @@ import com.opteral.springsms.ProcessService;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
+import com.opteral.springsms.validation.CheckerSMS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class GatewayController {
 	@ResponseBody
 	public ResponseJSON gateway(@RequestBody RequestJSON requestJSON) throws GatewayException {
 
-		return processService.process();
+		return processService.process(requestJSON);
 
 	}
 

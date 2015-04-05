@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -77,7 +78,7 @@ public class GatewayControllerTests {
     @Test
     public void testPost() throws Exception {
 
-        when(processServiceMock.process()).thenReturn(new ResponseJSON(ResponseJSON.ResponseCode.OK, "ok"));
+        when(processServiceMock.process(any(RequestJSON.class))).thenReturn(new ResponseJSON(ResponseJSON.ResponseCode.OK, "ok"));
 
         mockMvc.perform(post("/gateway")
                         .contentType(TestHelper.APPLICATION_JSON_UTF8)
@@ -92,7 +93,7 @@ public class GatewayControllerTests {
 
     @Test
     public void loginExceptionTest() throws Exception {
-        doThrow(new LoginException("login error")).when(processServiceMock).process();
+        doThrow(new LoginException("login error")).when(processServiceMock).process(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
@@ -106,7 +107,7 @@ public class GatewayControllerTests {
 
     @Test
     public void gatewayExceptionTest() throws Exception {
-        doThrow(new GatewayException("general error")).when(processServiceMock).process();
+        doThrow(new GatewayException("general error")).when(processServiceMock).process(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
@@ -119,7 +120,7 @@ public class GatewayControllerTests {
 
     @Test
     public void otherExceptionTest() throws Exception {
-        doThrow(new RuntimeException()).when(processServiceMock).process();
+        doThrow(new RuntimeException()).when(processServiceMock).process(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))

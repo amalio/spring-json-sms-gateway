@@ -3,13 +3,20 @@ package com.opteral.springsms.validation;
 import com.opteral.springsms.config.ConfigValues;
 import com.opteral.springsms.exceptions.ValidationException;
 import com.opteral.springsms.json.JSON_SMS;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class CheckerSMS {
 
     private Validator validator;
+
+    public CheckerSMS()
+    {
+        validator = new ValidatorImp();
+    }
 
     public CheckerSMS(Validator validator) {
         this.validator = validator;
