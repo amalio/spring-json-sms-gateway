@@ -4,10 +4,13 @@ import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,6 +27,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = WebConfig.class)
+@ActiveProfiles("test")
 public class IntegrationTest {
     private MockMvc mockMvc;
 
