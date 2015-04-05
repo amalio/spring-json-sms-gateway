@@ -18,12 +18,12 @@ import javax.sql.DataSource;
 public class DataConfig {
 
     @Bean(name="dataSource")
-    @Profile("prod")
+    @Profile("default")
     public DataSource dataSource() {
         DataSource dataSource = null;
         JndiTemplate jndi = new JndiTemplate();
         try {
-            dataSource = (DataSource) jndi.lookup("java:jboss/datasources/springsmsDS");
+            dataSource = (DataSource) jndi.lookup("java:jboss/datasources/jjsgDS");
         } catch (NamingException e) {
             //TODO log here
             throw new RuntimeException("failed getting datasource");
