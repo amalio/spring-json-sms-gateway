@@ -1,6 +1,7 @@
 package com.opteral.springsms.config;
 
 import com.opteral.springsms.config.RootConfig;
+import com.opteral.springsms.web.SecurityConfig;
 import com.opteral.springsms.web.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -9,7 +10,7 @@ public class WebappInitializer extends AbstractAnnotationConfigDispatcherServlet
   
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class<?>[] { RootConfig.class };
+    return new Class<?>[] { RootConfig.class, SecurityConfig.class };
   }
 
   @Override

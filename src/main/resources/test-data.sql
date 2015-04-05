@@ -1,1 +1,1 @@
-INSERT INTO users (name, passwd) VALUES ('amalio', '5ebe2294ecd0e0f08eab7690d2a6ee69');
+INSERT INTO users (name, passwd) VALUES ('amalio', 'e201994dca9320fc94336603b1cfc970');

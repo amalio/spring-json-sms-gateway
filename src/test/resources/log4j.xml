@@ -36,6 +36,10 @@
 		<level value="error" />
 	</logger>
 
+	<logger name="org.springframework.security">
+		<level value="error" />
+	</logger>
+
 	<!-- Root Logger -->
 	<root>
 		<priority value="error" />

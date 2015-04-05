@@ -1,10 +1,10 @@
 package com.opteral.springsms.web;
 
 import com.opteral.springsms.exceptions.GatewayException;
-import com.opteral.springsms.exceptions.LoginException;
 import com.opteral.springsms.json.Parser;
 import com.opteral.springsms.json.ResponseJSON;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalErrorHandler {
 
-    @ExceptionHandler(LoginException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public String handle(LoginException loginException)
+    public String handle(AuthenticationException authenticationException)
     {
-        return Parser.getJSON(new ResponseJSON(loginException));
+        return Parser.getJSON(new ResponseJSON(authenticationException));
     }
 
     @ExceptionHandler(GatewayException.class)

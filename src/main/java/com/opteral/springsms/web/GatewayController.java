@@ -8,6 +8,7 @@ import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.validation.CheckerSMS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

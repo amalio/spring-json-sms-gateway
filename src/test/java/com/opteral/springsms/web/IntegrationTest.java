@@ -19,6 +19,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -44,10 +50,11 @@ public class IntegrationTest {
 
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = webAppContextSetup(this.wac).build();
+        mockMvc = webAppContextSetup(this.wac)
+                .apply(springSecurity())
+                .build();
 
-        requestJSON.setUser("user");
-        requestJSON.setPassword("password");
+
         JSON_SMS json_sms = new JSON_SMS();
         json_sms.setMsisdn("34646974525");
         json_sms.setSender("sender");
@@ -60,6 +67,7 @@ public class IntegrationTest {
     public void testPost() throws Exception {
 
         mockMvc.perform(post("/gateway")
+                .with(httpBasic("amalio", "secreto")).with(csrf())
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isOk())
@@ -75,13 +83,33 @@ public class IntegrationTest {
         requestJSON.getSms_request().get(0).setMsisdn("not a msisdn");
 
         mockMvc.perform(post("/gateway")
+                .with(httpBasic("amalio", "secreto")).with(csrf())
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("msg").value(containsString("msisdn")))
         ;
 
+    }
+
+    @Test
+    public void WithOutAuth() throws Exception {
+        mockMvc.perform(post("/gateway")
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
+                .andExpect(status().isForbidden())
+        ;
+    }
+
+    @Test
+    public void WithBadAuth() throws Exception {
+        mockMvc.perform(post("/gateway")
+                .with(httpBasic("amalio", "bad password")).with(csrf())
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
+                .andExpect(status().isUnauthorized())
+        ;
     }
 
 

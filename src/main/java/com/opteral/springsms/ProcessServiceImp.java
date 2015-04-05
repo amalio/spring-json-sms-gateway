@@ -1,7 +1,6 @@
 package com.opteral.springsms;
 
 import com.opteral.springsms.exceptions.GatewayException;
-import com.opteral.springsms.exceptions.LoginException;
 import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.validation.CheckerSMS;

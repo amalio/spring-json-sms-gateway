@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -30,11 +34,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-        /*
+
         auth
                 .jdbcAuthentication()
-                .dataSource(dataSource);
-                */
+                .dataSource(dataSource)
+                .usersByUsernameQuery("SELECT name, passwd, true FROM users WHERE name=?")
+                .authoritiesByUsernameQuery("SELECT name, 'ROLE_USER' FROM users WHERE name=?")
+                .passwordEncoder(new Md5PasswordEncoder())
+        ;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .anyRequest().authenticated().and()
+                .formLogin().and()
+                .httpBasic();
     }
 }

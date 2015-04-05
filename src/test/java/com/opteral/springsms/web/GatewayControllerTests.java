@@ -2,8 +2,7 @@ package com.opteral.springsms.web;
 
 import com.opteral.springsms.ProcessService;
 import com.opteral.springsms.TestHelper;
-import com.opteral.springsms.exceptions.GatewayException;
-import com.opteral.springsms.exceptions.LoginException;
+import com.opteral.springsms.exceptions.GatewayException;;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
@@ -26,6 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+
+import javax.naming.AuthenticationException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -67,30 +68,13 @@ public class GatewayControllerTests {
 
         mockMvc = MockMvcBuilders.standaloneSetup(gatewayController).setHandlerExceptionResolvers(exceptionHandlerExceptionResolver).build();
 
-        requestJSON.setUser("user");
-        requestJSON.setPassword("password");
+
         JSON_SMS json_sms = new JSON_SMS();
         json_sms.setMsisdn("34646974525");
         json_sms.setSender("sender");
         json_sms.setText("message test");
         requestJSON.addSMS(json_sms);
         requestJSON.addSMS(json_sms);
-    }
-
-
-
-
-    @Test
-    public void loginExceptionTest() throws Exception {
-        doThrow(new LoginException("login error")).when(processServiceMock).process(any(RequestJSON.class));
-        mockMvc.perform(post("/gateway")
-                .contentType(TestHelper.APPLICATION_JSON_UTF8)
-                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("response_code").value("ERROR_LOGIN"))
-                .andExpect(jsonPath("msg").value("login error"))
-        ;
     }
 
 
@@ -118,6 +102,4 @@ public class GatewayControllerTests {
                 .andExpect(jsonPath("response_code").value("ERROR_GENERAL"))
         ;
     }
-
-
 }

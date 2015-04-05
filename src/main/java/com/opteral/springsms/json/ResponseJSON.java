@@ -1,6 +1,7 @@
 package com.opteral.springsms.json;
 
-import com.opteral.springsms.exceptions.LoginException;
+
+import org.springframework.security.core.AuthenticationException;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class ResponseJSON {
         this.msg = exception.getMessage();
     }
 
-    public ResponseJSON(LoginException loginException) {
+    public ResponseJSON(AuthenticationException authenticationException) {
         this.response_code = ResponseCode.ERROR_LOGIN;
-        this.msg = loginException.getMessage();
+        this.msg = authenticationException.getMessage();
     }
 
     public ResponseJSON(ResponseCode responseCode) {
