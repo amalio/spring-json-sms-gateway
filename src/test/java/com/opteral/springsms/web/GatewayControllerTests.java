@@ -1,16 +1,18 @@
 package com.opteral.springsms.web;
 
 import com.opteral.springsms.ProcessService;
+import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.exceptions.LoginException;
 import com.opteral.springsms.json.ResponseJSON;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,8 +48,14 @@ public class GatewayControllerTests {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        // mockMvc = webAppContextSetup(wac).build();
-        mockMvc = MockMvcBuilders.standaloneSetup(gatewayController).setHandlerExceptionResolvers(new ExceptionHandlerExceptionResolver()).build();
+
+        final ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver = new ExceptionHandlerExceptionResolver();
+        final StaticApplicationContext applicationContext = new StaticApplicationContext();
+        applicationContext.registerBeanDefinition("advice", new RootBeanDefinition(GlobalErrorHandler.class, null, null));
+        exceptionHandlerExceptionResolver.setApplicationContext(applicationContext);
+        exceptionHandlerExceptionResolver.afterPropertiesSet();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(gatewayController).setHandlerExceptionResolvers(exceptionHandlerExceptionResolver).build();
     }
 
 
@@ -61,14 +69,36 @@ public class GatewayControllerTests {
                 ;
     }
 
+
     @Test
-    @Ignore
     public void loginExceptionTest() throws Exception {
         doThrow(new LoginException("login error")).when(processServiceMock).process();
         mockMvc.perform(get("/gateway"))
-                .andExpect(status().isOk())
+                .andExpect(status().is4xxClientError())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("ERROR_LOGIN"))
+                .andExpect(jsonPath("msg").value("login error"))
+        ;
+    }
+
+    @Test
+    public void gatewayExceptionTest() throws Exception {
+        doThrow(new GatewayException("general error")).when(processServiceMock).process();
+        mockMvc.perform(get("/gateway"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("response_code").value("ERROR_GENERAL"))
+                .andExpect(jsonPath("msg").value("general error"))
+        ;
+    }
+
+    @Test
+    public void otherExceptionTest() throws Exception {
+        doThrow(new RuntimeException()).when(processServiceMock).process();
+        mockMvc.perform(get("/gateway"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("response_code").value("ERROR_GENERAL"))
         ;
     }
 

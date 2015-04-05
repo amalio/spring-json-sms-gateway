@@ -23,7 +23,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.opteral.springsms.web")
+@ComponentScan("com.opteral.springsms")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
