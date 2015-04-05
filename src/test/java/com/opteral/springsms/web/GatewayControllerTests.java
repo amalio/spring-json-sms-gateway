@@ -1,10 +1,14 @@
 package com.opteral.springsms.web;
 
 import com.opteral.springsms.ProcessService;
+import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.exceptions.LoginException;
+import com.opteral.springsms.json.JSON_SMS;
+import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,6 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,6 +48,8 @@ public class GatewayControllerTests {
     @InjectMocks
     GatewayController gatewayController;
 
+    private RequestJSON requestJSON = new RequestJSON();
+
 
 
     @Before
@@ -56,24 +63,39 @@ public class GatewayControllerTests {
         exceptionHandlerExceptionResolver.afterPropertiesSet();
 
         mockMvc = MockMvcBuilders.standaloneSetup(gatewayController).setHandlerExceptionResolvers(exceptionHandlerExceptionResolver).build();
+
+        requestJSON.setUser("user");
+        requestJSON.setPassword("password");
+        JSON_SMS json_sms = new JSON_SMS();
+        json_sms.setMsisdn("34646974525");
+        json_sms.setSender("sender");
+        json_sms.setText("message test");
+        requestJSON.addSMS(json_sms);
+        requestJSON.addSMS(json_sms);
     }
 
-
     @Test
-    public void testResponseControllerIsJSON() throws Exception {
+    public void testPost() throws Exception {
+
         when(processServiceMock.process()).thenReturn(new ResponseJSON(ResponseJSON.ResponseCode.OK, "ok"));
-        mockMvc.perform(get("/gateway"))
+
+        mockMvc.perform(post("/gateway")
+                        .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                        .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("OK"))
-                ;
+        ;
+
     }
 
 
     @Test
     public void loginExceptionTest() throws Exception {
         doThrow(new LoginException("login error")).when(processServiceMock).process();
-        mockMvc.perform(get("/gateway"))
+        mockMvc.perform(post("/gateway")
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("ERROR_LOGIN"))
@@ -81,10 +103,13 @@ public class GatewayControllerTests {
         ;
     }
 
+
     @Test
     public void gatewayExceptionTest() throws Exception {
         doThrow(new GatewayException("general error")).when(processServiceMock).process();
-        mockMvc.perform(get("/gateway"))
+        mockMvc.perform(post("/gateway")
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("ERROR_GENERAL"))
@@ -95,7 +120,9 @@ public class GatewayControllerTests {
     @Test
     public void otherExceptionTest() throws Exception {
         doThrow(new RuntimeException()).when(processServiceMock).process();
-        mockMvc.perform(get("/gateway"))
+        mockMvc.perform(post("/gateway")
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("ERROR_GENERAL"))

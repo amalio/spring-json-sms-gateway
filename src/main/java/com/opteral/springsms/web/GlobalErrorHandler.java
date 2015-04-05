@@ -2,8 +2,7 @@ package com.opteral.springsms.web;
 
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.exceptions.LoginException;
-import com.opteral.springsms.json.GsonFactory;
-import com.opteral.springsms.json.OutParser;
+import com.opteral.springsms.json.Parser;
 import com.opteral.springsms.json.ResponseJSON;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,7 +18,7 @@ public class GlobalErrorHandler {
     @ResponseBody
     public String handle(LoginException loginException)
     {
-        return OutParser.getJSON(new ResponseJSON(loginException));
+        return Parser.getJSON(new ResponseJSON(loginException));
     }
 
     @ExceptionHandler(GatewayException.class)
@@ -27,7 +26,7 @@ public class GlobalErrorHandler {
     @ResponseBody
     public String handle(GatewayException gatewayException)
     {
-        return OutParser.getJSON(new ResponseJSON(gatewayException));
+        return Parser.getJSON(new ResponseJSON(gatewayException));
     }
 
     @ExceptionHandler(Exception.class)
@@ -35,7 +34,7 @@ public class GlobalErrorHandler {
     @ResponseBody
     public String handle(Exception e)
     {
-        return OutParser.getJSON(new ResponseJSON(ResponseJSON.ResponseCode.ERROR_GENERAL, e.toString()));
+        return Parser.getJSON(new ResponseJSON(ResponseJSON.ResponseCode.ERROR_GENERAL, e.toString()));
     }
 
 }
