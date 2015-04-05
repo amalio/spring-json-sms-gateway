@@ -24,7 +24,7 @@ public class GatewayController {
 		this.processService = processService;
 	}
 
-	@RequestMapping(method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.HEAD}, headers="Accept=application/json")
+	@RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, headers="Accept=application/json")
 	@ResponseBody
 	public ResponseJSON gateway() throws GatewayException {
 

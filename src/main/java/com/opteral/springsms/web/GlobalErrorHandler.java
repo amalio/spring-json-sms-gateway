@@ -30,7 +30,6 @@ public class GlobalErrorHandler {
         return OutParser.getJSON(new ResponseJSON(gatewayException));
     }
 
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
