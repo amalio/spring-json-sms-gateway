@@ -75,20 +75,7 @@ public class GatewayControllerTests {
         requestJSON.addSMS(json_sms);
     }
 
-    @Test
-    public void testPost() throws Exception {
 
-        when(processServiceMock.process(any(RequestJSON.class))).thenReturn(new ResponseJSON(ResponseJSON.ResponseCode.OK, "ok"));
-
-        mockMvc.perform(post("/gateway")
-                        .contentType(TestHelper.APPLICATION_JSON_UTF8)
-                        .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("response_code").value("OK"))
-        ;
-
-    }
 
 
     @Test
