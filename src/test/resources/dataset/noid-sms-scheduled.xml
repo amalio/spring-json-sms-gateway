@@ -3,7 +3,7 @@
 
     <user />
 
-    <sms id = "1"
+    <sms
          user_id = "456"
          subid = "subid1"
          msisdn = "34656987415"

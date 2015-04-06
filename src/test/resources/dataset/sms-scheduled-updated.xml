@@ -5,12 +5,12 @@
 
     <sms id = "1"
          user_id = "456"
-         subid = "subid1"
+         subid = "subid updated"
          msisdn = "34656987415"
          sender = "sender"
          text = "The text of message with an ñ"
          status = "6"
          ackurl = "http://www.anurl.com/ack"
-         datetime_scheduled = "2014-12-27 10:30:00.0"/>
+         datetime_scheduled = "2015-12-27 10:30:00.0"/>
 
 </dataset>

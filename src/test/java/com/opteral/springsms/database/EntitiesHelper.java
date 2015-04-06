@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class EntitiesHelper {
-    public static final long SMS_ID = 4654;
+    public static final long SMS_ID = 1;
     public static final int USER_ID = 456;
     public static final String USER_NAME = "amalio";
     public static final String SENDER = "sender";
@@ -40,7 +40,7 @@ public class EntitiesHelper {
         sms.setSms_status(SMS.SMS_Status.ACCEPTD);
         sms.setSubid(SUBID);
         sms.setAckurl(ACKURL);
-        sms.setDatetimeScheduled(DATETIME_SCHEDULED_2015);
+        sms.setDatetimeScheduled(DATETIME_SCHEDULED_2014);
         sms.setTest(false);
 
         return sms;
