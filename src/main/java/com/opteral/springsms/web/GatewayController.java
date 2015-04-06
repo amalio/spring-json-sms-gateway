@@ -2,13 +2,11 @@ package com.opteral.springsms.web;
 
 
 
-import com.opteral.springsms.ProcessService;
+import com.opteral.springsms.Procesor;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
-import com.opteral.springsms.validation.CheckerSMS;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +15,29 @@ import org.springframework.web.bind.annotation.*;
 public class GatewayController {
 
 	@Autowired
-	private ProcessService processService;
+	private Procesor procesor;
 
-	public ProcessService getProcessService() {
-		return processService;
+	public Procesor getProcesor() {
+		return procesor;
 	}
 
-	public void setProcessService(ProcessService processService) {
-		this.processService = processService;
+	public void setProcesor(Procesor procesor) {
+		this.procesor = procesor;
 	}
 
-	@RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, headers="Accept=application/json")
+	@RequestMapping(method = {RequestMethod.POST}, headers="Accept=application/json")
 	@ResponseBody
-	public ResponseJSON gateway(@RequestBody RequestJSON requestJSON) throws GatewayException {
+	public ResponseJSON gatewayPost(@RequestBody RequestJSON requestJSON) throws GatewayException {
 
-		return processService.process(requestJSON);
+		return procesor.post(requestJSON);
+
+	}
+
+	@RequestMapping(method = {RequestMethod.DELETE}, headers="Accept=application/json")
+	@ResponseBody
+	public ResponseJSON gatewayDelete(@RequestBody RequestJSON requestJSON) throws GatewayException {
+
+		return procesor.delete(requestJSON);
 
 	}
 

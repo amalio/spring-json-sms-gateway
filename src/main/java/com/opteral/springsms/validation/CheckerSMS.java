@@ -37,7 +37,7 @@ public class CheckerSMS {
             throw new ValidationException("Error: Valid text is needed on sms: "+jsonsms.getSubid());
         if (!isValidSender(jsonsms))
             throw new ValidationException("Error: Valid sender is needed  on sms: "+jsonsms.getSubid());
-        if (!jsonsms.isForDelete() && !validator.isMsisdn(jsonsms.getMsisdn()))
+        if (!validator.isMsisdn(jsonsms.getMsisdn()))
             throw new ValidationException("Error: Valid msisdn is needed  on sms: "+jsonsms.getSubid());
         if (!isValidAck(jsonsms))
             throw new ValidationException("Error: ACK configuration issue  on sms: "+jsonsms.getSubid());
@@ -78,8 +78,6 @@ public class CheckerSMS {
 
     private boolean isValidTexto(JSON_SMS jsonsms)
     {
-        if (jsonsms.isForDelete())
-            return true;
 
         String texto = jsonsms.getText();
 
@@ -90,8 +88,6 @@ public class CheckerSMS {
 
     private boolean isValidSender(JSON_SMS json_sms)
     {
-        if (json_sms.isForDelete())
-            return true;
         if (json_sms.getSender() == null)
             return false;
 

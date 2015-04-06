@@ -25,6 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -67,6 +68,20 @@ public class IntegrationTest {
     public void testPost() throws Exception {
 
         mockMvc.perform(post("/gateway")
+                .with(httpBasic("amalio", "secreto")).with(csrf())
+                .contentType(TestHelper.APPLICATION_JSON_UTF8)
+                .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("response_code").value("OK"))
+        ;
+
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+
+        mockMvc.perform(delete("/gateway")
                 .with(httpBasic("amalio", "secreto")).with(csrf())
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))

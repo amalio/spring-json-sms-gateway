@@ -1,13 +1,11 @@
 package com.opteral.springsms.web;
 
-import com.opteral.springsms.ProcessService;
+import com.opteral.springsms.Procesor;
 import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.exceptions.GatewayException;;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
-import com.opteral.springsms.json.ResponseJSON;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,11 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
-import javax.naming.AuthenticationException;
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -47,7 +41,7 @@ public class GatewayControllerTests {
     protected WebApplicationContext wac;
 
     @Mock
-    ProcessService processServiceMock;
+    Procesor procesorMock;
 
     @InjectMocks
     GatewayController gatewayController;
@@ -80,7 +74,7 @@ public class GatewayControllerTests {
 
     @Test
     public void gatewayExceptionTest() throws Exception {
-        doThrow(new GatewayException("general error")).when(processServiceMock).process(any(RequestJSON.class));
+        doThrow(new GatewayException("general error")).when(procesorMock).post(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
@@ -93,7 +87,7 @@ public class GatewayControllerTests {
 
     @Test
     public void otherExceptionTest() throws Exception {
-        doThrow(new RuntimeException()).when(processServiceMock).process(any(RequestJSON.class));
+        doThrow(new RuntimeException()).when(procesorMock).post(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))

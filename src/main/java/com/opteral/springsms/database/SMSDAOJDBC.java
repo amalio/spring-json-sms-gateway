@@ -8,6 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class SMSDAOJDBC implements SMSDAO{
 
     private static final String SELECT_SMS_BY_ID ="SELECT * FROM sms WHERE id = ?";
     private static final String UPDATE_SMS ="UPDATE sms SET sender  = ?, msisdn = ?, text = ?, datetime_scheduled = ?, subid = ?, ackurl = ?, idSMSC = ?, datetime_lastmodified = ? WHERE id = ? AND user_id = ?";
+    private static final String DELETE_SMS ="DELETE FROM sms WHERE id=? AND user_id=?";
 
     @Autowired
     @Qualifier("jdbctemplate")
@@ -66,6 +68,20 @@ public class SMSDAOJDBC implements SMSDAO{
 
         } catch (Exception e) {
             throw new GatewayException ("Error: Failed updating sms");
+        }
+
+    }
+
+    @Override
+    public void delete(SMS sms) throws GatewayException {
+        try {
+            Object[] args = new Object[] {
+                    sms.getId(),
+                    sms.getUser_id()
+            };
+            jdbcTemplate.update(DELETE_SMS, args);
+        } catch (EmptyResultDataAccessException e) {
+            throw new GatewayException ("Error: Failed deleting sms");
         }
 
     }

@@ -19,7 +19,6 @@ public class SMS {
     private Timestamp datetimeScheduled;
     private Timestamp datetimeLastModified;
     private boolean test;
-    private boolean forDelete;
 
 
     public long getId() {
@@ -119,14 +118,6 @@ public class SMS {
         this.test = test;
     }
 
-    public boolean isForDelete() {
-        return forDelete;
-    }
-
-    public void setForDelete(boolean forDelete) {
-        this.forDelete = forDelete;
-    }
-
     public SMS() {
     }
 
@@ -144,7 +135,6 @@ public class SMS {
         this.ackurl = jsonSMS.getAck_url();
         this.datetimeScheduled = jsonSMS.getDatetime();
         this.test = jsonSMS.isTest();
-        this.forDelete = jsonSMS.isForDelete();
 
         if (datetimeScheduled != null)
             sms_status = SMS_Status.SCHEDULED;

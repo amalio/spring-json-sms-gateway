@@ -8,27 +8,22 @@ import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.validation.CheckerSMS;
-import com.opteral.springsms.validation.ValidatorImp;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class ProcessServiceImpTest {
+public class ProcessorImpTest {
 
     private CheckerSMS checkerSMSMock;
-    private ProcessServiceImp processService;
+    private ProcesorImp processService;
     private RequestJSON requestJSON;
     private SMSDAO smsDaoMock;
     private SpringAuthentication authenticationMock;
@@ -46,7 +41,7 @@ public class ProcessServiceImpTest {
         checkerSMSMock = mock(CheckerSMS.class);
         smsDaoMock = mock(SMSDAO.class);
         authenticationMock = mock(SpringAuthentication.class);
-        processService = new ProcessServiceImp(checkerSMSMock, smsDaoMock, authenticationMock);
+        processService = new ProcesorImp(checkerSMSMock, smsDaoMock, authenticationMock);
 
     }
 
@@ -54,7 +49,7 @@ public class ProcessServiceImpTest {
     public void checkFails() throws GatewayException {
         doThrow(new ValidationException("validation fails")).when(checkerSMSMock).check(anyListOf(JSON_SMS.class));
 
-        processService.process(new RequestJSON());
+        processService.post(new RequestJSON());
     }
 
     @Test
@@ -62,7 +57,7 @@ public class ProcessServiceImpTest {
 
         when(authenticationMock.getUserId()).thenReturn(10);
 
-        ResponseJSON responseJSON = processService.process(requestJSON);
+        ResponseJSON responseJSON = processService.post(requestJSON);
 
 
         assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
@@ -85,7 +80,7 @@ public class ProcessServiceImpTest {
         doThrow(new GatewayException("msg")).when(smsDaoMock).insert(any(SMS.class));
         doThrow(new GatewayException("msg")).when(smsDaoMock).update(any(SMS.class));
 
-        ResponseJSON responseJSON = processService.process(requestJSON);
+        ResponseJSON responseJSON = processService.post(requestJSON);
 
         assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
         assertFalse(responseJSON.getSms_responses().get(0).isRequest_ok());
@@ -105,7 +100,7 @@ public class ProcessServiceImpTest {
         requestJSON.getSms_request().get(1).setTest(true);
         when(authenticationMock.getUserId()).thenReturn(10);
 
-        ResponseJSON responseJSON = processService.process(requestJSON);
+        ResponseJSON responseJSON = processService.post(requestJSON);
 
         assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
         assertTrue(responseJSON.getSms_responses().get(0).isRequest_ok());
@@ -121,7 +116,7 @@ public class ProcessServiceImpTest {
     @Test
     public void authenticationFailsRetrievingId() throws GatewayException {
 
-        ResponseJSON responseJSON = processService.process(requestJSON);
+        ResponseJSON responseJSON = processService.post(requestJSON);
 
         assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
         assertFalse(responseJSON.getSms_responses().get(0).isRequest_ok());
@@ -130,6 +125,26 @@ public class ProcessServiceImpTest {
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
         verify(smsDaoMock, times(0)).insert(any(SMS.class));
         verify(smsDaoMock, times(0)).update(any(SMS.class));
+
+
+    }
+
+    @Test
+    public void requestForDeleteOk() throws GatewayException {
+
+        when(authenticationMock.getUserId()).thenReturn(10);
+
+        ResponseJSON responseJSON = processService.delete(requestJSON);
+
+        assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
+        assertTrue(responseJSON.getSms_responses().get(0).isRequest_ok());
+        assertTrue(responseJSON.getSms_responses().get(1).isRequest_ok());
+        verify(checkerSMSMock, times(0)).check(anyListOf(JSON_SMS.class));
+
+        ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
+        verify(smsDaoMock, times(2)).delete(argument.capture());
+        assertEquals(10, argument.getValue().getUser_id());
+
 
 
     }

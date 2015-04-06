@@ -94,4 +94,15 @@ public class SMSDAOJDBCTest {
 
 
     }
+
+    @Test
+    @DatabaseSetup("/dataset/sms-scheduled.xml")
+    @ExpectedDatabase(value= "/dataset/empty.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
+    public void testDeleteSMS() throws Exception {
+
+        SMS sms = newSMS();
+        smsdaojdbc.delete(sms);
+
+
+    }
 }

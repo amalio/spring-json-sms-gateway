@@ -9,16 +9,14 @@ import com.opteral.springsms.json.SMS_Response;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.validation.CheckerSMS;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component(value= WebApplicationContext.SCOPE_REQUEST)
-public class ProcessServiceImp implements ProcessService {
+public class ProcesorImp implements Procesor {
 
     @Autowired
     private CheckerSMS checkerSMS;
@@ -29,12 +27,14 @@ public class ProcessServiceImp implements ProcessService {
     @Autowired
     private SpringAuthentication authentication;
 
-    public ProcessServiceImp()
+    private boolean forDelete;
+
+    public ProcesorImp()
     {
 
     }
 
-    public ProcessServiceImp(CheckerSMS checkerSMS, SMSDAO smsdao, SpringAuthentication authentication)
+    public ProcesorImp(CheckerSMS checkerSMS, SMSDAO smsdao, SpringAuthentication authentication)
     {
         this.checkerSMS = checkerSMS;
         this.smsdao = smsdao;
@@ -42,11 +42,17 @@ public class ProcessServiceImp implements ProcessService {
     }
 
     @Override
-    public ResponseJSON process(RequestJSON requestJSON) throws GatewayException {
+    public ResponseJSON post(RequestJSON requestJSON) throws GatewayException {
 
         check(requestJSON);
 
-        return new ResponseJSON(listProcess(requestJSON));
+        return new ResponseJSON(processList(requestJSON));
+    }
+
+    @Override
+    public ResponseJSON delete(RequestJSON requestJSON) throws GatewayException {
+        forDelete = true;
+        return new ResponseJSON(processList(requestJSON));
     }
 
     private void check(RequestJSON requestJSON) throws GatewayException {
@@ -55,7 +61,7 @@ public class ProcessServiceImp implements ProcessService {
 
     }
 
-    private  List<SMS_Response> listProcess(RequestJSON requestJSON) throws GatewayException {
+    private  List<SMS_Response> processList(RequestJSON requestJSON) throws GatewayException {
 
         List<SMS_Response> sms_responses = new ArrayList<SMS_Response>() ;
 
@@ -64,18 +70,15 @@ public class ProcessServiceImp implements ProcessService {
         {
             try
             {
-
                 SMS sms = new SMS(jsonSMS, authentication.getUserId());
 
                 persist(sms);
 
                 sms_responses.add(new SMS_Response(sms, SMS_Response.OK));
 
-
             }
             catch (Exception e) {
                 sms_responses.add(new SMS_Response(jsonSMS, SMS_Response.ERROR));
-
             }
         }
 
@@ -85,7 +88,9 @@ public class ProcessServiceImp implements ProcessService {
     private void persist(SMS sms) throws GatewayException {
         if (!sms.isTest())
         {
-            if (sms.getId() > 0)
+            if (forDelete)
+                smsdao.delete(sms);
+            else if (sms.getId() > 0)
                 smsdao.insert(sms);
             else
                 smsdao.update(sms);
