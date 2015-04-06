@@ -37,6 +37,7 @@ public class EntitiesHelper {
         sms.setSender(SENDER);
         sms.setMsisdn(MSISDN);
         sms.setText(TEXT);
+        sms.setSms_status(SMS.SMS_Status.ACCEPTD);
         sms.setSubid(SUBID);
         sms.setAckurl(ACKURL);
         sms.setDatetimeScheduled(DATETIME_SCHEDULED_2015);

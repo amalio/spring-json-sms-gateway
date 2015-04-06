@@ -147,7 +147,7 @@ public class SMS {
         this.forDelete = jsonSMS.isForDelete();
 
         if (datetimeScheduled != null)
-            sms_status = SMS_Status.PROGRAMED;
+            sms_status = SMS_Status.SCHEDULED;
         else
             sms_status = SMS_Status.ACCEPTD;
 
@@ -163,7 +163,7 @@ public class SMS {
         UNDELIV(3),
         UNKNWOWN(4),
         WAITING(5),
-        PROGRAMED(6),
+        SCHEDULED(6),
         ACCEPTD(7),
         ONSMSC(8),
         DELIVRD(9);

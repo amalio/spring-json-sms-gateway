@@ -12,7 +12,7 @@ public class RowMappers {
             SMS sms = new SMS();
 
             sms.setId(resultSet.getLong("id"));
-            sms.setUser_id(resultSet.getInt("users_id"));
+            sms.setUser_id(resultSet.getInt("user_id"));
             sms.setMsisdn(resultSet.getString("msisdn"));
             sms.setSender(resultSet.getString("sender"));
             sms.setText(resultSet.getString("text"));

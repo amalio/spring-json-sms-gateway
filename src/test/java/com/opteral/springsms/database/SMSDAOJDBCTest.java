@@ -2,10 +2,14 @@ package com.opteral.springsms.database;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.github.springtestdbunit.dataset.ReplacementDataSetLoader;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.web.WebConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +23,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.sql.DataSource;
 
+import static com.opteral.springsms.database.EntitiesHelper.newSMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-//TODO WebContext??¿?¿?
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = WebConfig.class)
 @ActiveProfiles("test")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class })
 @DbUnitConfiguration(dataSetLoader = ReplacementDataSetLoader.class)
-
+@DatabaseTearDown("/dataset/user.xml")
 public class SMSDAOJDBCTest {
 
     @Autowired
@@ -44,8 +49,9 @@ public class SMSDAOJDBCTest {
         this.dataSource = dataSource;
     }
 
+
     @Test
-    @DatabaseSetup("/dataset/sms-instant-saved.xml")
+    @DatabaseSetup("/dataset/sms-instant.xml")
     public void testgetSMSSMS() throws Exception {
         SMS sms = smsdaojdbc.getSMS(EntitiesHelper.SMS_ID);
 
@@ -60,6 +66,18 @@ public class SMSDAOJDBCTest {
         assertEquals(null, sms.getDatetimeScheduled());
         assertEquals(SMS.SMS_Status.ACCEPTD, sms.getSms_status());
         assertEquals(false, sms.isTest());
+
+    }
+
+    @Test
+    @DatabaseSetup("/dataset/empty.xml")
+    @ExpectedDatabase(value="/dataset/sms-scheduled.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
+    public void testInsertSMS() throws Exception {
+
+        SMS sms = newSMS();
+        sms.setSms_status(SMS.SMS_Status.SCHEDULED);
+        smsdaojdbc.insert(sms);
+
 
     }
 }

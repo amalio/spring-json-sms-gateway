@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<dataset>
+
+    <user />
+
+    <sms id = "4655"
+         user_id = "456"
+         subid = "subid1"
+         msisdn = "34656987415"
+         sender = "sender"
+         text = "The text of message with an ñ"
+         status = "6"
+         ackurl = "http://www.anurl.com/ack"
+     />
+
+
+</dataset>

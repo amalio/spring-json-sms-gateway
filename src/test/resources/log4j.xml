@@ -40,6 +40,10 @@
 		<level value="error" />
 	</logger>
 
+	<logger name="org.dbunit.dataset">
+		<level value="error" />
+	</logger>
+
 	<!-- Root Logger -->
 	<root>
 		<priority value="error" />
