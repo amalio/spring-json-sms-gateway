@@ -1,6 +1,7 @@
 package com.opteral.springsms.database;
 
 import com.opteral.springsms.exceptions.GatewayException;
+import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -93,6 +94,11 @@ public class SMSDAOJDBC implements SMSDAO{
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }
+    }
+
+    @Override
+    public void updateSMS_Status(ACK ack) throws GatewayException {
+        throw new NotImplementedException();
     }
 
 

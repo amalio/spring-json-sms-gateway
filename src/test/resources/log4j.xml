@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="spring-json-sms-gateway">
-		<level value="error" />
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
