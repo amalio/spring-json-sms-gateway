@@ -3,11 +3,14 @@ package com.opteral.springsms.json;
 
 import org.springframework.security.core.AuthenticationException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseJSON {
+
     private ResponseCode response_code;
     private String msg;
+    private List<SMS_Response> sms_responses = new ArrayList<SMS_Response>();
 
     public ResponseJSON(ResponseCode response_code, String msg) {
         this.response_code = response_code;
@@ -28,6 +31,15 @@ public class ResponseJSON {
         this.response_code = responseCode;
     }
 
+    public ResponseJSON() {
+        this.response_code = ResponseCode.OK;
+    }
+
+    public ResponseJSON(List<SMS_Response> sms_responses) {
+        this.response_code = ResponseCode.OK;
+        this.sms_responses = sms_responses;
+    }
+
     public ResponseCode getResponse_code() {
         return response_code;
     }
@@ -44,7 +56,18 @@ public class ResponseJSON {
         this.msg = msg;
     }
 
+    public List<SMS_Response> getSms_responses() {
+        return sms_responses;
+    }
 
+    public void setSms_responses(List<SMS_Response> sms_responses) {
+        this.sms_responses = sms_responses;
+    }
+
+    public void addSmsResponse(SMS_Response sms_response)
+    {
+        sms_responses.add(sms_response);
+    }
 
     public enum ResponseCode {
 
