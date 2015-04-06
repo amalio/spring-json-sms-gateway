@@ -7,6 +7,7 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.github.springtestdbunit.dataset.ReplacementDataSetLoader;
+import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.web.WebConfig;
 import org.junit.Test;
@@ -30,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = {WebConfig.class, RootConfig.class})
 @ActiveProfiles("test")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 @DbUnitConfiguration(dataSetLoader = ReplacementDataSetLoader.class)

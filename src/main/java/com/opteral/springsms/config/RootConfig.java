@@ -41,8 +41,8 @@ import javax.annotation.PostConstruct;
 public class RootConfig {
 
     @Autowired
-    @Qualifier("config_input")
-    InputStream inputConfig;
+    @Qualifier("config_swich")
+    boolean configSwich;
 
     final Logger logger = Logger.getLogger(RootConfig.class);
     public static final AtomicBoolean iniciado = new AtomicBoolean(false);
@@ -52,8 +52,12 @@ public class RootConfig {
     @PostConstruct
     public void init()
     {
-        if (!isTest())
+        if (isTest())
+        {
+            logger.info("|||||||||||||| TEST CONTEXT ||||||||||||||");
             return;
+        }
+
 
         loadConfig();
         setupSMPP();
@@ -65,7 +69,7 @@ public class RootConfig {
     private void loadConfig()
     {
         try {
-            Utilities.getConfig(inputConfig);
+            Utilities.getConfig(isTest());
         }
         catch (Exception e)
         {
@@ -157,14 +161,6 @@ public class RootConfig {
 
     private boolean isTest()
     {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        String[] profiles = context.getEnvironment().getActiveProfiles();
-
-        for (String profile : profiles)
-        {
-            if (profile.equals("test"))
-                return true;
-        }
-        return false;
+        return configSwich;
     }
 }

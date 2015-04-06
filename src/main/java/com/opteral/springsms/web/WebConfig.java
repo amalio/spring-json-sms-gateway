@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.opteral.springsms")
+@ComponentScan("com.opteral.springsms.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean

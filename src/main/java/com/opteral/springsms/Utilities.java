@@ -1,5 +1,6 @@
 package com.opteral.springsms;
 
+
 import com.opteral.springsms.config.ConfigValues;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -9,9 +10,15 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Utilities {
-    public static void getConfig(InputStream inputStream) throws IOException {
+    public static void getConfig(boolean isTest) throws IOException {
 
         Properties properties = new Properties();
+
+        InputStream inputStream = null;
+        if (isTest)
+            inputStream = Utilities.class.getClassLoader().getResourceAsStream("gateway.properties");
+        else
+            inputStream = new FileInputStream("etc/amalio/gateway.properties");
 
         properties.load(inputStream);
 

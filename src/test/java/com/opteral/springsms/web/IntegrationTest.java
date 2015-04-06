@@ -1,6 +1,7 @@
 package com.opteral.springsms.web;
 
 import com.opteral.springsms.TestHelper;
+import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
 import org.junit.Before;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = {WebConfig.class, RootConfig.class})
 @ActiveProfiles("test")
 public class IntegrationTest {
     private MockMvc mockMvc;

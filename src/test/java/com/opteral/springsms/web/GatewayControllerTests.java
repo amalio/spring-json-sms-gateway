@@ -2,6 +2,7 @@ package com.opteral.springsms.web;
 
 import com.opteral.springsms.Procesor;
 import com.opteral.springsms.TestHelper;
+import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.exceptions.GatewayException;;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = WebConfig.class)
+@ContextConfiguration(classes = {WebConfig.class, RootConfig.class})
 @ActiveProfiles("test")
 public class GatewayControllerTests {
 
