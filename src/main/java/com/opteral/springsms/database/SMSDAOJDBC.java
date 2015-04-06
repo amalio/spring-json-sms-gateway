@@ -31,7 +31,12 @@ public class SMSDAOJDBC implements SMSDAO{
     }
 
     @Override
-    public void persist(SMS sms) throws GatewayException {
+    public void insert(SMS sms) throws GatewayException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void update(SMS sms) throws GatewayException {
         throw new NotImplementedException();
     }
 

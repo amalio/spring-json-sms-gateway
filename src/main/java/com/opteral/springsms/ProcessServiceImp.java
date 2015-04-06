@@ -67,8 +67,7 @@ public class ProcessServiceImp implements ProcessService {
 
                 SMS sms = new SMS(jsonSMS, authentication.getUserId());
 
-                if (!sms.isTest())
-                    smsdao.persist(sms);
+                persist(sms);
 
                 sms_responses.add(new SMS_Response(sms, SMS_Response.OK));
 
@@ -81,6 +80,16 @@ public class ProcessServiceImp implements ProcessService {
         }
 
         return sms_responses;
+    }
+
+    private void persist(SMS sms) throws GatewayException {
+        if (!sms.isTest())
+        {
+            if (sms.getId() > 0)
+                smsdao.insert(sms);
+            else
+                smsdao.update(sms);
+        }
     }
 
 }

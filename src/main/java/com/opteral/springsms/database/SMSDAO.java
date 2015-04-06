@@ -4,6 +4,7 @@ import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
 
 public interface SMSDAO {
-    void persist(SMS sms) throws GatewayException;
+    void insert(SMS sms) throws GatewayException;
+    void update(SMS sms) throws GatewayException;
     public SMS getSMS(long id) throws GatewayException;
 }

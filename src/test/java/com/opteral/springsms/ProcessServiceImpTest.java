@@ -71,7 +71,8 @@ public class ProcessServiceImpTest {
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
 
         ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
-        verify(smsDaoMock, times(2)).persist(argument.capture());
+        verify(smsDaoMock, times(1)).insert(argument.capture());
+        verify(smsDaoMock, times(1)).update(argument.capture());
         assertEquals(10, argument.getValue().getUser_id());
 
 
@@ -81,7 +82,8 @@ public class ProcessServiceImpTest {
     @Test
     public void smsDAOFails() throws GatewayException {
         when(authenticationMock.getUserId()).thenReturn(10);
-        doThrow(new GatewayException("msg")).when(smsDaoMock).persist(any(SMS.class));
+        doThrow(new GatewayException("msg")).when(smsDaoMock).insert(any(SMS.class));
+        doThrow(new GatewayException("msg")).when(smsDaoMock).update(any(SMS.class));
 
         ResponseJSON responseJSON = processService.process(requestJSON);
 
@@ -90,7 +92,28 @@ public class ProcessServiceImpTest {
         assertFalse(responseJSON.getSms_responses().get(1).isRequest_ok());
 
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
-        verify(smsDaoMock, times(2)).persist(any(SMS.class));
+        verify(smsDaoMock, times(1)).insert(any(SMS.class));
+        verify(smsDaoMock, times(1)).update(any(SMS.class));
+
+
+    }
+
+    @Test
+    public void noPersistIfTestField() throws GatewayException {
+
+        requestJSON.getSms_request().get(0).setTest(true);
+        requestJSON.getSms_request().get(1).setTest(true);
+        when(authenticationMock.getUserId()).thenReturn(10);
+
+        ResponseJSON responseJSON = processService.process(requestJSON);
+
+        assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
+        assertTrue(responseJSON.getSms_responses().get(0).isRequest_ok());
+        assertTrue(responseJSON.getSms_responses().get(1).isRequest_ok());
+
+        verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
+        verify(smsDaoMock, times(0)).insert(any(SMS.class));
+        verify(smsDaoMock, times(0)).update(any(SMS.class));
 
 
     }
@@ -105,7 +128,8 @@ public class ProcessServiceImpTest {
         assertFalse(responseJSON.getSms_responses().get(1).isRequest_ok());
 
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
-        verify(smsDaoMock, times(0)).persist(any(SMS.class));
+        verify(smsDaoMock, times(0)).insert(any(SMS.class));
+        verify(smsDaoMock, times(0)).update(any(SMS.class));
 
 
     }
