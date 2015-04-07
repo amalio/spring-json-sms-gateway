@@ -30,13 +30,6 @@ public class SmsDaoJDBC implements SmsDao {
     @Qualifier("jdbctemplate")
     private JdbcTemplate jdbcTemplate;
 
-    public SmsDaoJDBC() {
-    }
-
-    public SmsDaoJDBC(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public void insert(SMS sms) throws GatewayException {
 

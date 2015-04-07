@@ -1,6 +1,7 @@
 package com.opteral.springsms.database;
 
 import com.opteral.springsms.model.SMS;
+import com.opteral.springsms.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -23,6 +24,16 @@ public class RowMappers {
             sms.setSms_status(SMS.SMS_Status.fromInt(resultSet.getInt("status")));
 
             return sms;
+        }
+    }
+
+    public  static final class UserRowMapper implements RowMapper<User> {
+        public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setName(resultSet.getString("name"));
+            return user;
         }
     }
 }
