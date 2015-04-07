@@ -12,20 +12,17 @@ import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Component
-public class UserDaoJDBC implements UserDao {
+public class UserDaoJDBC extends abstractDao implements UserDao  {
 
     private static final String GET_USER ="SELECT * FROM user WHERE name = ?";
-
-    @Autowired
-    @Qualifier("jdbctemplate")
-    private JdbcTemplate jdbcTemplate;
 
     @Override
     public User getUserByName(String name) throws AuthenticationException {
         try {
-            return jdbcTemplate.queryForObject(GET_USER, new RowMappers.UserRowMapper(), name);
+            return getJdbcTemplate().queryForObject(GET_USER, new RowMappers.UserRowMapper(), name);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthenticationCredentialsNotFoundException("no user with this name");
         }
     }
+
 }

@@ -48,7 +48,6 @@ public class SmsDaoJDBCTest {
     private DataSource dataSource;
 
     @Autowired
-    @Qualifier("smsdaojdbc")
     private SmsDaoJDBC smsDaoJDBC;
 
     public void setDataSource(DataSource dataSource) {

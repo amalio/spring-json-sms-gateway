@@ -4,6 +4,8 @@ import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.smsc.SMSC;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,8 +13,12 @@ import java.util.List;
 
 @Component
 public class Sender {
+    private static final Logger logger = Logger.getLogger(Sender.class);
 
+    @Autowired
     private SmsDao smsDao;
+
+    @Autowired
     private SMSC smsc;
 
     public Sender() {
@@ -27,13 +33,14 @@ public class Sender {
     public void send(java.sql.Date aFecha)  {
 
         try {
-
-            processList(smsDao.getSMSForSend(aFecha));
+            List<SMS> lista = smsDao.getSMSForSend(aFecha);
+            logThis("Hay "+lista.size()+" mensajes para envío");
+            processList(lista);
 
         }
         catch (Exception e) {
 
-            //TODO log this
+            logThis(e.getMessage());
         }
 
 
@@ -49,7 +56,7 @@ public class Sender {
 
             } catch (Exception e) {
 
-               //TODO log this
+               logThis(e.getMessage());
             }
 
         }
@@ -67,6 +74,9 @@ public class Sender {
     }
 
 
-
+    private void logThis(String mensaje)
+    {
+        logger.error(mensaje);
+    }
 
 }

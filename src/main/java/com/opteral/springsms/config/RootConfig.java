@@ -157,7 +157,7 @@ public class RootConfig {
     private void sendSMSScheduled()
     {
         logger.info("Running scheduled task - sending SMS");
-        //send
+        sender.send(new java.sql.Date(Instant.now().toEpochMilli()));
     }
 
     public static SMPPSession getSession() {

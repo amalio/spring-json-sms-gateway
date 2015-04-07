@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component("smsdaojdbc")
-public class SmsDaoJDBC implements SmsDao {
+@Component
+public class SmsDaoJDBC extends abstractDao implements SmsDao {
 
     private static final String SELECT_SMS_BY_ID ="SELECT * FROM sms WHERE id = ?";
     private static final String UPDATE_SMS ="UPDATE sms SET sender  = ?, msisdn = ?, text = ?, datetime_scheduled = ?, subid = ?, ackurl = ?, idSMSC = ?, datetime_lastmodified = ? WHERE id = ? AND user_id = ?";
@@ -26,9 +26,6 @@ public class SmsDaoJDBC implements SmsDao {
     private static final String UPDATE_STATUS ="UPDATE sms SET status = ?, datetime_lastmodified = ? WHERE idSMSC = ?";
     private static final String GET_FOR_SEND ="SELECT * FROM sms WHERE status < ? AND (datetime_scheduled <= ? OR datetime_scheduled is NULL )";
 
-    @Autowired
-    @Qualifier("jdbctemplate")
-    private JdbcTemplate jdbcTemplate;
 
     @Override
     public void insert(SMS sms) throws GatewayException {
@@ -36,7 +33,7 @@ public class SmsDaoJDBC implements SmsDao {
         try {
             Timestamp timestampNow = new Timestamp(new Date().getTime());
 
-            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("sms");
+            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(getJdbcTemplate()).withTableName("sms");
             jdbcInsert.setGeneratedKeyName("id");
             Map<String, Object> args = argsFromSMS(sms, timestampNow);
             long id = jdbcInsert.executeAndReturnKey(args).longValue();
@@ -61,7 +58,7 @@ public class SmsDaoJDBC implements SmsDao {
                     sms.getId(),
                     sms.getUser_id()
             };
-            jdbcTemplate.update(UPDATE_SMS, args);
+            getJdbcTemplate().update(UPDATE_SMS, args);
 
         } catch (Exception e) {
             throw new GatewayException ("Error: Failed updating sms");
@@ -76,7 +73,7 @@ public class SmsDaoJDBC implements SmsDao {
                     sms.getId(),
                     sms.getUser_id()
             };
-            jdbcTemplate.update(DELETE_SMS, args);
+            getJdbcTemplate().update(DELETE_SMS, args);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed deleting sms");
         }
@@ -86,7 +83,7 @@ public class SmsDaoJDBC implements SmsDao {
     @Override
     public SMS getSMS(long id) throws GatewayException {
         try {
-            return jdbcTemplate.queryForObject(SELECT_SMS_BY_ID, new RowMappers.SMSRowMapper(), id);
+            return getJdbcTemplate().queryForObject(SELECT_SMS_BY_ID, new RowMappers.SMSRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }
@@ -100,7 +97,7 @@ public class SmsDaoJDBC implements SmsDao {
                     new Timestamp(ack.getAcktimestamp().getTime()),
                     ack.getIdSMSC()
             };
-            jdbcTemplate.update(UPDATE_STATUS, args);
+            getJdbcTemplate().update(UPDATE_STATUS, args);
 
         } catch (Exception e) {
             throw new GatewayException ("Error: Failed updating sms");
@@ -114,7 +111,7 @@ public class SmsDaoJDBC implements SmsDao {
                     SMS.SMS_Status.ONSMSC.getValue(),
                     aFecha
             };
-            return jdbcTemplate.query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
+            return getJdbcTemplate().query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }

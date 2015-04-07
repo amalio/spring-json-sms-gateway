@@ -18,7 +18,7 @@ public class Utilities {
         if (isTest)
             inputStream = Utilities.class.getClassLoader().getResourceAsStream("gateway.properties");
         else
-            inputStream = new FileInputStream("etc/amalio/gateway.properties");
+            inputStream = new FileInputStream("C:\\gateway.properties");
 
         properties.load(inputStream);
 

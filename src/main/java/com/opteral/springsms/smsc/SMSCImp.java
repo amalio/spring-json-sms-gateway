@@ -10,9 +10,11 @@ import org.jsmpp.PDUException;
 import org.jsmpp.bean.*;
 import org.jsmpp.extra.NegativeResponseException;
 import org.jsmpp.extra.ResponseTimeoutException;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class SMSCImp implements SMSC {
 
     private static final Logger logger = Logger.getLogger(SMSCImp.class);
