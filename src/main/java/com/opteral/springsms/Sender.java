@@ -4,14 +4,19 @@ import com.opteral.springsms.database.SMSDAO;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.smsc.SMSC;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 
+@Component
 public class Sender {
 
     private SMSDAO smsdao;
     private SMSC smsc;
+
+    public Sender() {
+    }
 
     public Sender(SMSDAO smsdao, SMSC smsc) {
 
@@ -33,8 +38,6 @@ public class Sender {
 
 
     }
-
-
 
     private void processList(List<SMS> lista)  {
 

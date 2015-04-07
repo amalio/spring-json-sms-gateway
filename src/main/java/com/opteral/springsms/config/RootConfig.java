@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
+import com.opteral.springsms.Sender;
 import com.opteral.springsms.Utilities;
 import com.opteral.springsms.smsc.SMSCListener;
 import com.opteral.springsms.smsc.SMSCSessionListener;
@@ -43,6 +44,17 @@ public class RootConfig {
     @Autowired
     @Qualifier("config_swich")
     boolean configSwich;
+
+    @Autowired
+    Sender sender;
+
+    public void setSender(Sender sender) {
+        this.sender = sender;
+    }
+
+    public void setConfigSwich(boolean configSwich) {
+        this.configSwich = configSwich;
+    }
 
     final Logger logger = Logger.getLogger(RootConfig.class);
     public static final AtomicBoolean iniciado = new AtomicBoolean(false);
