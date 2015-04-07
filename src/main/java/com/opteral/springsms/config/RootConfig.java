@@ -48,6 +48,9 @@ public class RootConfig {
     @Autowired
     Sender sender;
 
+    @Autowired
+    SMSCListener smscListener;
+
     public void setSender(Sender sender) {
         this.sender = sender;
     }
@@ -96,7 +99,7 @@ public class RootConfig {
         {
             session = new SMPPSession();
 
-            session.setMessageReceiverListener(new SMSCListener());
+            session.setMessageReceiverListener(smscListener);
 
             session.setTransactionTimer(5000L);
 

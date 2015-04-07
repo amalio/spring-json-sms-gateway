@@ -14,15 +14,23 @@ import org.jsmpp.session.DataSmResult;
 import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.Session;
 import org.jsmpp.util.InvalidDeliveryReceiptException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SMSCListener implements MessageReceiverListener {
 
     private static final Logger logger = Logger.getLogger(SMSCListener.class);
+
+    @Autowired
+    SmsDaoJDBC smsdao;
 
     @Override
     public void onAcceptDeliverSm(DeliverSm deliverSm) throws ProcessRequestException {
 
         if (MessageType.SMSC_DEL_RECEIPT.containedIn(deliverSm.getEsmClass())) {
+
 
 
             try
@@ -38,20 +46,15 @@ public class SMSCListener implements MessageReceiverListener {
                 ack.setSms_status(SMS.SMS_Status.DELIVRD);
                 ack.setAckNow();
 
-
-                final SmsDaoJDBC smsDaoJDBC = new SmsDaoJDBC();
-
-                processACK(smsDaoJDBC, ack);
-
                 Runnable r = new Runnable()
                 {
                     @Override
                     public void run()
                     {
                         try {
-                            processACK(smsDaoJDBC,ack);
+                            processACK(smsdao,ack);
                         } catch (GatewayException e) {
-                            logger.error("Failed sending ACK", e);
+                            logger.error("Failed processing ACK", e);
                         }
                     }
                 };
@@ -64,12 +67,6 @@ public class SMSCListener implements MessageReceiverListener {
             {
                 logger.error("Failed getting delivery receipt", e);
             }
-
-            catch (GatewayException e)
-            {
-                logger.error("Failed updating sms_status on databse", e);
-            }
-
         }
         else
         {
