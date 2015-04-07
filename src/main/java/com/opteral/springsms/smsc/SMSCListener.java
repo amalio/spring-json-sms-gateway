@@ -1,12 +1,11 @@
 package com.opteral.springsms.smsc;
 
 
-import com.opteral.springsms.ACKSender;
+import com.opteral.springsms.sender.ACKSender;
 import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.database.SmsDaoJDBC;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
-import org.apache.log4j.Logger;
 import org.jsmpp.bean.*;
 import org.jsmpp.extra.ProcessRequestException;
 import org.jsmpp.session.DataSmResult;
@@ -14,9 +13,11 @@ import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.Session;
 import org.jsmpp.util.InvalidDeliveryReceiptException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Component
+@Profile("!test")
+@Component("smscListener")
 public class SMSCListener implements MessageReceiverListener {
 
     @Autowired

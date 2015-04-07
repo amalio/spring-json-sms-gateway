@@ -1,11 +1,12 @@
 package com.opteral.springsms.smsc;
 
 
-import com.opteral.springsms.config.RootConfig;
+import com.opteral.springsms.sender.SenderContext;
 import org.apache.log4j.Logger;
 import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.SessionStateListener;
 
+//TODO MAkeme a bean!
 public class SMSCSessionListener implements SessionStateListener {
 
     private static final Logger logger = Logger.getLogger(SMSCSessionListener.class);
@@ -14,9 +15,9 @@ public class SMSCSessionListener implements SessionStateListener {
     {
         if (newState.equals(SessionState.CLOSED))
         {
-            RootConfig.iniciado.set(false);
+            SenderContext.iniciado.set(false);
 
-            logger.info("Session closed");
+            //TODO log this
 
         }
     }

@@ -3,9 +3,11 @@ package com.opteral.springsms.config;
 import com.opteral.springsms.model.ACK;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.jsmpp.bean.AlertNotification;
-import org.springframework.stereotype.Component;
 
 
 @Aspect
@@ -16,11 +18,11 @@ public class LoggerAOP {
     @AfterThrowing(pointcut ="execution(* com.opteral.springsms.smsc.SMSCListener.onAcceptDeliverSm(..))", throwing="error")
     public void logAfter(Throwable error) {
 
-        logger.error("AOP!!!!!! - SMSCListerner: " + error.getMessage());
+        logger.error("SMSCListerner: " + error.getMessage());
 
     }
 
-    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCListener.onAcceptDeliverSm(..))")
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCListener.onAcceptAlertNotification(..))")
     public void logAfter(JoinPoint joinPoint) {
         AlertNotification alertNotification = (AlertNotification)joinPoint.getArgs()[0];
         logger.warn("Incoming SMSC alert : " + alertNotification.getCommandId() + alertNotification.toString());
@@ -28,7 +30,7 @@ public class LoggerAOP {
     }
 
 
-    @Before("execution(* com.opteral.springsms.Sender.send(..))")
+    @Before("execution(* com.opteral.springsms.sender.Sender.send(..))")
     public void beforeSend2() {
 
         logger.info("Sender -> Sending pending sms...");
@@ -40,5 +42,10 @@ public class LoggerAOP {
         ACK ack = (ACK)result;
         logger.info("DeliveryReceiptProcesor -> "+ack.getIdSMSC()+" "+ack.getDeliveredInfo());
 
+    }
+
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.*(..))", throwing="error")
+    public void failsOnSMPPSessionBean(Throwable error) {
+        logger.error("SMSCListerner: " + error.getMessage());
     }
 }

@@ -3,6 +3,7 @@ package com.opteral.springsms;
 import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
+import com.opteral.springsms.sender.Sender;
 import com.opteral.springsms.smsc.SMSC;
 import org.junit.Before;
 import org.junit.Test;

@@ -38,7 +38,7 @@ public class FunctionalTest {
         jsonsms.setTest(false);
 
 
-        for (int i=0; i<5; i++)
+        for (int i=0; i<10; i++)
         {
             requestJSON.getSms_request().add(jsonsms);
         }

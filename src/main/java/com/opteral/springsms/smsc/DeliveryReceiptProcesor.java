@@ -3,8 +3,10 @@ package com.opteral.springsms.smsc;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import org.jsmpp.bean.DeliveryReceipt;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile("!test")
 @Component
 public class DeliveryReceiptProcesor {
 
