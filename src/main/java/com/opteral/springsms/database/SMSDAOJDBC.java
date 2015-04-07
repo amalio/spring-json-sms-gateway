@@ -24,6 +24,7 @@ public class SmsDaoJDBC implements SmsDao {
     private static final String UPDATE_SMS ="UPDATE sms SET sender  = ?, msisdn = ?, text = ?, datetime_scheduled = ?, subid = ?, ackurl = ?, idSMSC = ?, datetime_lastmodified = ? WHERE id = ? AND user_id = ?";
     private static final String DELETE_SMS ="DELETE FROM sms WHERE id=? AND user_id=?";
     private static final String UPDATE_STATUS ="UPDATE sms SET status = ?, datetime_lastmodified = ? WHERE idSMSC = ?";
+    private static final String GET_FOR_SEND ="SELECT * FROM sms WHERE status < ? AND (datetime_scheduled <= ? OR datetime_scheduled is NULL )";
 
     @Autowired
     @Qualifier("jdbctemplate")
@@ -115,7 +116,15 @@ public class SmsDaoJDBC implements SmsDao {
 
     @Override
     public List<SMS> getSMSForSend(java.sql.Date aFecha) throws GatewayException {
-        throw new NotImplementedException();
+        try {
+            Object[] args = new Object[] {
+                    SMS.SMS_Status.ONSMSC.getValue(),
+                    aFecha
+            };
+            return jdbcTemplate.query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
+        } catch (EmptyResultDataAccessException e) {
+            throw new GatewayException ("Error: Failed recovering sms");
+        }
     }
 
 

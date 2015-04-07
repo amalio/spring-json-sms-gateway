@@ -25,6 +25,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.sql.DataSource;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import static com.opteral.springsms.database.EntitiesHelper.newSMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -54,7 +58,7 @@ public class SmsDaoJDBCTest {
 
     @Test
     @DatabaseSetup("/dataset/sms-instant.xml")
-    public void testgetSMSSMS() throws Exception {
+    public void getSMSTest() throws Exception {
         SMS sms = smsDaoJDBC.getSMS(EntitiesHelper.SMS_ID);
 
         assertNotNull(sms);
@@ -74,7 +78,7 @@ public class SmsDaoJDBCTest {
     @Test
     @DatabaseSetup("/dataset/empty.xml")
     @ExpectedDatabase(value="/dataset/noid-sms-scheduled.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
-    public void testInsertSMS() throws Exception {
+    public void insertSMSTest() throws Exception {
 
         SMS sms = newSMS();
         sms.setSms_status(SMS.SMS_Status.SCHEDULED);
@@ -86,7 +90,7 @@ public class SmsDaoJDBCTest {
     @Test
     @DatabaseSetup("/dataset/sms-scheduled.xml")
     @ExpectedDatabase(value= "/dataset/sms-scheduled-updated.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
-    public void testUpdateSMS() throws Exception {
+    public void updateSMSTest() throws Exception {
 
         SMS sms = newSMS();
         sms.setSms_status(SMS.SMS_Status.SCHEDULED);
@@ -100,13 +104,43 @@ public class SmsDaoJDBCTest {
     @Test
     @DatabaseSetup("/dataset/sms-onsmsc.xml")
     @ExpectedDatabase(value= "/dataset/sms-delivered.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
-    public void testUpdateStatus() throws Exception {
+    public void updateStatusTest() throws Exception {
 
         ACK ack = new ACK();
         ack.setIdSMSC("idSMSC1");
         ack.setSms_status(SMS.SMS_Status.DELIVRD);
         ack.setAckNow();
         smsDaoJDBC.updateSMS_Status(ack);
+
+    }
+
+    @Test
+    @DatabaseSetup("/dataset/sms-forsend.xml")
+    public void getSMSForSendTest() throws Exception {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date date = formatter.parse("2015-01-01 10:30:00");
+
+        List<SMS> lista = smsDaoJDBC.getSMSForSend(new Date(date.getTime()));
+
+        assertEquals(2, lista.size());
+
+        assertEquals(1, lista.get(0).getId());
+        assertEquals(2, lista.get(1).getId());
+        assertEquals(EntitiesHelper.USER_ID, lista.get(0).getUser_id());
+        assertEquals(EntitiesHelper.USER_ID, lista.get(1).getUser_id());
+        assertEquals(EntitiesHelper.SENDER, lista.get(0).getSender());
+        assertEquals(EntitiesHelper.SENDER, lista.get(1).getSender());
+        assertEquals(EntitiesHelper.MSISDN, lista.get(0).getMsisdn());
+        assertEquals(EntitiesHelper.MSISDN, lista.get(1).getMsisdn());
+        assertEquals(EntitiesHelper.TEXT, lista.get(0).getText());
+        assertEquals(EntitiesHelper.TEXT, lista.get(1).getText());
+        assertEquals(EntitiesHelper.SUBID, lista.get(0).getSubid());
+        assertEquals(EntitiesHelper.SUBID, lista.get(1).getSubid());
+        assertEquals(EntitiesHelper.ACKURL, lista.get(0).getAckurl());
+        assertEquals(EntitiesHelper.ACKURL, lista.get(1).getAckurl());
+        assertEquals(null, lista.get(0).getDatetimeScheduled());
+        assertEquals(EntitiesHelper.DATETIME_SCHEDULED_2014, lista.get(1).getDatetimeScheduled());
 
     }
 }
