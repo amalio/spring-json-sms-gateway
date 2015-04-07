@@ -14,6 +14,7 @@ public class ACK {
     private Long idSMS;
     private String idSMSC;
     private Timestamp acktimestamp;
+    private String deliveredInfo;
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -83,4 +84,11 @@ public class ACK {
         return formatter.format(acktimestamp);
     }
 
+    public String getDeliveredInfo() {
+        return deliveredInfo;
+    }
+
+    public void setDeliveredInfo(String deliveredInfo) {
+        this.deliveredInfo = deliveredInfo;
+    }
 }

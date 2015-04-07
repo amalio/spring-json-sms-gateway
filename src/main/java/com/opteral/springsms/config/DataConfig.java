@@ -1,5 +1,6 @@
 package com.opteral.springsms.config;
 
+import com.opteral.springsms.smsc.DeliveryReceiptProcesor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
