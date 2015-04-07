@@ -70,7 +70,7 @@ public class IntegrationTest {
     public void testPost() throws Exception {
 
         mockMvc.perform(post("/gateway")
-                .with(httpBasic("amalio", "secreto")).with(csrf())
+                .with(httpBasic("amalio", "secreto"))
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ public class IntegrationTest {
     public void testDelete() throws Exception {
 
         mockMvc.perform(delete("/gateway")
-                .with(httpBasic("amalio", "secreto")).with(csrf())
+                .with(httpBasic("amalio", "secreto"))
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class IntegrationTest {
         requestJSON.getSms_request().get(0).setMsisdn("not a msisdn");
 
         mockMvc.perform(post("/gateway")
-                .with(httpBasic("amalio", "secreto")).with(csrf())
+                .with(httpBasic("amalio", "secreto"))
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isBadRequest())
@@ -115,14 +115,14 @@ public class IntegrationTest {
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
-                .andExpect(status().isForbidden())
+                .andExpect(status().isUnauthorized())
         ;
     }
 
     @Test
     public void WithBadAuth() throws Exception {
         mockMvc.perform(post("/gateway")
-                .with(httpBasic("amalio", "bad password")).with(csrf())
+                .with(httpBasic("amalio", "bad password"))
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
                 .andExpect(status().isUnauthorized())
