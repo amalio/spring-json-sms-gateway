@@ -1,6 +1,6 @@
 package com.opteral.springsms;
 
-import com.opteral.springsms.database.SMSDAO;
+import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
@@ -22,7 +22,7 @@ public class ProcesorImp implements Procesor {
     private CheckerSMS checkerSMS;
 
     @Autowired
-    private SMSDAO smsdao;
+    private SmsDao smsDao;
 
     @Autowired
     private SpringAuthentication authentication;
@@ -34,10 +34,10 @@ public class ProcesorImp implements Procesor {
 
     }
 
-    public ProcesorImp(CheckerSMS checkerSMS, SMSDAO smsdao, SpringAuthentication authentication)
+    public ProcesorImp(CheckerSMS checkerSMS, SmsDao smsDao, SpringAuthentication authentication)
     {
         this.checkerSMS = checkerSMS;
-        this.smsdao = smsdao;
+        this.smsDao = smsDao;
         this.authentication = authentication;
     }
 
@@ -89,11 +89,11 @@ public class ProcesorImp implements Procesor {
         if (!sms.isTest())
         {
             if (forDelete)
-                smsdao.delete(sms);
+                smsDao.delete(sms);
             else if (sms.getId() > 0)
-                smsdao.insert(sms);
+                smsDao.insert(sms);
             else
-                smsdao.update(sms);
+                smsDao.update(sms);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.opteral.springsms;
 
-import com.opteral.springsms.database.SMSDAO;
+import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.exceptions.ValidationException;
 import com.opteral.springsms.json.JSON_SMS;
@@ -25,7 +25,7 @@ public class ProcessorImpTest {
     private CheckerSMS checkerSMSMock;
     private ProcesorImp processService;
     private RequestJSON requestJSON;
-    private SMSDAO smsDaoMock;
+    private SmsDao smsDaoMock;
     private SpringAuthentication authenticationMock;
 
     @Before
@@ -39,7 +39,7 @@ public class ProcessorImpTest {
         requestJSON.getSms_request().add(jsonsms2);
 
         checkerSMSMock = mock(CheckerSMS.class);
-        smsDaoMock = mock(SMSDAO.class);
+        smsDaoMock = mock(SmsDao.class);
         authenticationMock = mock(SpringAuthentication.class);
         processService = new ProcesorImp(checkerSMSMock, smsDaoMock, authenticationMock);
 

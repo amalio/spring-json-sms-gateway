@@ -8,6 +8,7 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.github.springtestdbunit.dataset.ReplacementDataSetLoader;
 import com.opteral.springsms.config.RootConfig;
+import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.web.WebConfig;
 import org.junit.Test;
@@ -36,7 +37,7 @@ import static org.junit.Assert.assertNotNull;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 @DbUnitConfiguration(dataSetLoader = ReplacementDataSetLoader.class)
 @DatabaseTearDown("/dataset/user.xml")
-public class SMSDAOJDBCTest {
+public class SmsDaoJDBCTest {
 
     @Autowired
     @Qualifier("dataSource")
@@ -44,7 +45,7 @@ public class SMSDAOJDBCTest {
 
     @Autowired
     @Qualifier("smsdaojdbc")
-    private SMSDAOJDBC smsdaojdbc;
+    private SmsDaoJDBC smsDaoJDBC;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -54,7 +55,7 @@ public class SMSDAOJDBCTest {
     @Test
     @DatabaseSetup("/dataset/sms-instant.xml")
     public void testgetSMSSMS() throws Exception {
-        SMS sms = smsdaojdbc.getSMS(EntitiesHelper.SMS_ID);
+        SMS sms = smsDaoJDBC.getSMS(EntitiesHelper.SMS_ID);
 
         assertNotNull(sms);
         assertEquals(EntitiesHelper.SMS_ID, sms.getId());
@@ -77,7 +78,7 @@ public class SMSDAOJDBCTest {
 
         SMS sms = newSMS();
         sms.setSms_status(SMS.SMS_Status.SCHEDULED);
-        smsdaojdbc.insert(sms);
+        smsDaoJDBC.insert(sms);
 
 
     }
@@ -91,19 +92,21 @@ public class SMSDAOJDBCTest {
         sms.setSms_status(SMS.SMS_Status.SCHEDULED);
         sms.setDatetimeScheduled(EntitiesHelper.DATETIME_SCHEDULED_2015);
         sms.setSubid("subid updated");
-        smsdaojdbc.update(sms);
+        smsDaoJDBC.update(sms);
 
 
     }
 
     @Test
-    @DatabaseSetup("/dataset/sms-scheduled.xml")
-    @ExpectedDatabase(value= "/dataset/empty.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
-    public void testDeleteSMS() throws Exception {
+    @DatabaseSetup("/dataset/sms-onsmsc.xml")
+    @ExpectedDatabase(value= "/dataset/sms-delivered.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
+    public void testUpdateStatus() throws Exception {
 
-        SMS sms = newSMS();
-        smsdaojdbc.delete(sms);
-
+        ACK ack = new ACK();
+        ack.setIdSMSC("idSMSC1");
+        ack.setSms_status(SMS.SMS_Status.DELIVRD);
+        ack.setAckNow();
+        smsDaoJDBC.updateSMS_Status(ack);
 
     }
 }

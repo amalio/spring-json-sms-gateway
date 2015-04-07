@@ -1,6 +1,6 @@
 package com.opteral.springsms;
 
-import com.opteral.springsms.database.SMSDAO;
+import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.smsc.SMSC;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 public class SenderTest {
 
-    private SMSDAO smsDAO;
+    private SmsDao smsDAO;
     private SMSC smsc;
     private Sender sender;
     private List<SMS> smsList = new ArrayList<SMS>();
@@ -30,7 +30,7 @@ public class SenderTest {
     @Before
     public void init() throws GatewayException {
 
-        smsDAO = mock(SMSDAO.class);
+        smsDAO = mock(SmsDao.class);
         smsc = mock(SMSC.class);
 
         sender = new Sender(smsDAO, smsc);

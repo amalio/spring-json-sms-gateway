@@ -7,7 +7,7 @@ import com.opteral.springsms.model.SMS;
 import java.sql.Date;
 import java.util.List;
 
-public interface SMSDAO {
+public interface SmsDao {
     void insert(SMS sms) throws GatewayException;
     void update(SMS sms) throws GatewayException;
     void delete(SMS sms) throws GatewayException;

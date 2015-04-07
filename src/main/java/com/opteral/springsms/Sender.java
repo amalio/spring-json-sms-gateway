@@ -1,6 +1,6 @@
 package com.opteral.springsms;
 
-import com.opteral.springsms.database.SMSDAO;
+import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.smsc.SMSC;
@@ -12,15 +12,15 @@ import java.util.List;
 @Component
 public class Sender {
 
-    private SMSDAO smsdao;
+    private SmsDao smsDao;
     private SMSC smsc;
 
     public Sender() {
     }
 
-    public Sender(SMSDAO smsdao, SMSC smsc) {
+    public Sender(SmsDao smsDao, SMSC smsc) {
 
-        this.smsdao = smsdao;
+        this.smsDao = smsDao;
         this.smsc = smsc;
     }
 
@@ -28,7 +28,7 @@ public class Sender {
 
         try {
 
-            processList(smsdao.getSMSForSend(aFecha));
+            processList(smsDao.getSMSForSend(aFecha));
 
         }
         catch (Exception e) {
@@ -62,7 +62,7 @@ public class Sender {
         if (sms.getIdSMSC() != null && !sms.getIdSMSC().isEmpty()) {
 
             sms.setSms_status(SMS.SMS_Status.ONSMSC);
-            smsdao.update(sms);
+            smsDao.update(sms);
         }
     }
 

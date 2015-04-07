@@ -1,6 +1,6 @@
 package com.opteral.springsms;
 
-import com.opteral.springsms.database.SMSDAO;
+import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
@@ -13,9 +13,9 @@ public class ACKSender {
 
     private static final Logger logger = Logger.getLogger(ACKSender.class);
 
-    public static void sendACK(ACK ack, SMSDAO smsdao) throws GatewayException {
+    public static void sendACK(ACK ack, SmsDao smsDao) throws GatewayException {
 
-        SMS sms = smsdao.getSMS(ack.getIdSMS());
+        SMS sms = smsDao.getSMS(ack.getIdSMS());
 
         if (sms.getAckurl().isEmpty())
             return;

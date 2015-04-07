@@ -18,20 +18,21 @@ import java.util.List;
 import java.util.Map;
 
 @Component("smsdaojdbc")
-public class SMSDAOJDBC implements SMSDAO{
+public class SmsDaoJDBC implements SmsDao {
 
     private static final String SELECT_SMS_BY_ID ="SELECT * FROM sms WHERE id = ?";
     private static final String UPDATE_SMS ="UPDATE sms SET sender  = ?, msisdn = ?, text = ?, datetime_scheduled = ?, subid = ?, ackurl = ?, idSMSC = ?, datetime_lastmodified = ? WHERE id = ? AND user_id = ?";
     private static final String DELETE_SMS ="DELETE FROM sms WHERE id=? AND user_id=?";
+    private static final String UPDATE_STATUS ="UPDATE sms SET status = ?, datetime_lastmodified = ? WHERE idSMSC = ?";
 
     @Autowired
     @Qualifier("jdbctemplate")
     private JdbcTemplate jdbcTemplate;
 
-    public SMSDAOJDBC() {
+    public SmsDaoJDBC() {
     }
 
-    public SMSDAOJDBC(JdbcTemplate jdbcTemplate) {
+    public SmsDaoJDBC(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -99,7 +100,17 @@ public class SMSDAOJDBC implements SMSDAO{
 
     @Override
     public void updateSMS_Status(ACK ack) throws GatewayException {
-        throw new NotImplementedException();
+        try {
+            Object[] args = new Object[] {
+                    ack.getSms_status().getValue(),
+                    new Timestamp(ack.getAcktimestamp().getTime()),
+                    ack.getIdSMSC()
+            };
+            jdbcTemplate.update(UPDATE_STATUS, args);
+
+        } catch (Exception e) {
+            throw new GatewayException ("Error: Failed updating sms");
+        }
     }
 
     @Override

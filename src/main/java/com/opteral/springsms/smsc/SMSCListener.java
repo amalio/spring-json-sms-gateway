@@ -2,8 +2,8 @@ package com.opteral.springsms.smsc;
 
 
 import com.opteral.springsms.ACKSender;
-import com.opteral.springsms.database.SMSDAO;
-import com.opteral.springsms.database.SMSDAOJDBC;
+import com.opteral.springsms.database.SmsDao;
+import com.opteral.springsms.database.SmsDaoJDBC;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
@@ -14,10 +14,6 @@ import org.jsmpp.session.DataSmResult;
 import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.Session;
 import org.jsmpp.util.InvalidDeliveryReceiptException;
-
-import java.sql.SQLException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 public class SMSCListener implements MessageReceiverListener {
 
@@ -43,9 +39,9 @@ public class SMSCListener implements MessageReceiverListener {
                 ack.setAckNow();
 
 
-                final SMSDAOJDBC smsdaojdbc = new SMSDAOJDBC();
+                final SmsDaoJDBC smsDaoJDBC = new SmsDaoJDBC();
 
-                processACK(smsdaojdbc, ack);
+                processACK(smsDaoJDBC, ack);
 
                 Runnable r = new Runnable()
                 {
@@ -53,7 +49,7 @@ public class SMSCListener implements MessageReceiverListener {
                     public void run()
                     {
                         try {
-                            processACK(smsdaojdbc,ack);
+                            processACK(smsDaoJDBC,ack);
                         } catch (GatewayException e) {
                             logger.error("Failed sending ACK", e);
                         }
@@ -93,11 +89,11 @@ public class SMSCListener implements MessageReceiverListener {
         return null;
     }
 
-    private void processACK(SMSDAO smsdao, ACK ack) throws GatewayException {
+    private void processACK(SmsDao smsDao, ACK ack) throws GatewayException {
 
-        smsdao.updateSMS_Status(ack);
+        smsDao.updateSMS_Status(ack);
 
-        ACKSender.sendACK(ack, smsdao);
+        ACKSender.sendACK(ack, smsDao);
     }
 
 
