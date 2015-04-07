@@ -10,16 +10,22 @@ import org.jsmpp.PDUException;
 import org.jsmpp.bean.*;
 import org.jsmpp.extra.NegativeResponseException;
 import org.jsmpp.extra.ResponseTimeoutException;
+import org.jsmpp.session.SMPPSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+
 
 @Component
 public class SMSCImp implements SMSC {
 
     private static final Logger logger = Logger.getLogger(SMSCImp.class);
 
-
+    @Autowired
+    SMPPSessionBean smppSessionBean;
 
     @Override
     public void sendSMS(SMS sms) throws GatewayException, IOException {
@@ -35,7 +41,7 @@ public class SMSCImp implements SMSC {
 
         try
         {
-            String messageId = RootConfig.getSession().submitShortMessage("CMT", TypeOfNumber.ALPHANUMERIC, NumberingPlanIndicator.UNKNOWN, sms.getSender(), TypeOfNumber.INTERNATIONAL, NumberingPlanIndicator.UNKNOWN, sms.getMsisdn(), new ESMClass(), (byte) 0, (byte) 1, null, null, registeredDelivery, (byte) 0, dataCoding, (byte) 0, msgText);
+            String messageId = smppSessionBean.submitShortMessage("CMT", TypeOfNumber.ALPHANUMERIC, NumberingPlanIndicator.UNKNOWN, sms.getSender(), TypeOfNumber.INTERNATIONAL, NumberingPlanIndicator.UNKNOWN, sms.getMsisdn(), new ESMClass(), (byte) 0, (byte) 1, null, null, registeredDelivery, (byte) 0, dataCoding, (byte) 0, msgText);
             sms.setIdSMSC(messageId);
             logger.info("Message submitted, message_id is " + messageId);
 

@@ -1,4 +1,4 @@
-package com.opteral.springsms;
+package com.opteral.springsms.sender;
 
 import com.opteral.springsms.database.SmsDao;
 import com.opteral.springsms.exceptions.GatewayException;
@@ -6,10 +6,12 @@ import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.smsc.SMSC;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+
 
 @Component
 public class Sender {
