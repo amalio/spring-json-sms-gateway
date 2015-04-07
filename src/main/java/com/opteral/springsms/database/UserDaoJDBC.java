@@ -19,7 +19,7 @@ public class UserDaoJDBC extends abstractDao implements UserDao  {
     @Override
     public User getUserByName(String name) throws AuthenticationException {
         try {
-            return getJdbcTemplate().queryForObject(GET_USER, new RowMappers.UserRowMapper(), name);
+            return jdbcTemplate.queryForObject(GET_USER, new RowMappers.UserRowMapper(), name);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthenticationCredentialsNotFoundException("no user with this name");
         }

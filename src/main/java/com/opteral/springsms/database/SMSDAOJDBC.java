@@ -33,7 +33,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
         try {
             Timestamp timestampNow = new Timestamp(new Date().getTime());
 
-            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(getJdbcTemplate()).withTableName("sms");
+            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("sms");
             jdbcInsert.setGeneratedKeyName("id");
             Map<String, Object> args = argsFromSMS(sms, timestampNow);
             long id = jdbcInsert.executeAndReturnKey(args).longValue();
@@ -58,7 +58,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
                     sms.getId(),
                     sms.getUser_id()
             };
-            getJdbcTemplate().update(UPDATE_SMS, args);
+            jdbcTemplate.update(UPDATE_SMS, args);
 
         } catch (Exception e) {
             throw new GatewayException ("Error: Failed updating sms");
@@ -73,7 +73,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
                     sms.getId(),
                     sms.getUser_id()
             };
-            getJdbcTemplate().update(DELETE_SMS, args);
+            jdbcTemplate.update(DELETE_SMS, args);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed deleting sms");
         }
@@ -83,7 +83,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
     @Override
     public SMS getSMS(long id) throws GatewayException {
         try {
-            return getJdbcTemplate().queryForObject(SELECT_SMS_BY_ID, new RowMappers.SMSRowMapper(), id);
+            return jdbcTemplate.queryForObject(SELECT_SMS_BY_ID, new RowMappers.SMSRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }
@@ -97,7 +97,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
                     new Timestamp(ack.getAcktimestamp().getTime()),
                     ack.getIdSMSC()
             };
-            getJdbcTemplate().update(UPDATE_STATUS, args);
+            jdbcTemplate.update(UPDATE_STATUS, args);
 
         } catch (Exception e) {
             throw new GatewayException ("Error: Failed updating sms");
@@ -111,7 +111,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
                     SMS.SMS_Status.ONSMSC.getValue(),
                     aFecha
             };
-            return getJdbcTemplate().query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
+            return jdbcTemplate.query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }

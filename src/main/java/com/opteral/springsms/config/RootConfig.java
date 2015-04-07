@@ -8,11 +8,8 @@ import com.opteral.springsms.smsc.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +21,11 @@ import javax.annotation.PostConstruct;
         @Filter(type=FilterType.ANNOTATION, value=EnableWebMvc.class)
     })
 public class RootConfig {
+
+    @Bean
+    public LoggerAOP loggerAOP(){
+        return new LoggerAOP();
+    }
 
     @Autowired
     @Qualifier("config_swich")

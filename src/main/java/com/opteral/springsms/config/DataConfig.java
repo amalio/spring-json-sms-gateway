@@ -42,16 +42,10 @@ public class DataConfig {
                 .addScript("classpath:test-data.sql")
                 .build();
     }
-    /*
+
     @Bean(name="jdbctemplate")
        public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
-    }
-    */
-
-    @Bean
-    public LoggerAOP loggerAOP(){
-        return new LoggerAOP();
     }
 
 }
