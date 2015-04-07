@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.jsmpp.bean.AlertNotification;
+import org.jsmpp.extra.SessionState;
 
 
 @Aspect
@@ -46,6 +47,23 @@ public class LoggerAOP {
 
     @AfterThrowing(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.*(..))", throwing="error")
     public void failsOnSMPPSessionBean(Throwable error) {
-        logger.error("SMSCListerner: " + error.getMessage());
+        logger.error("SMPPSessionBean: " + error.getMessage());
+    }
+
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.submitShortMessage(..))")
+    public void afterSetup() {
+        logger.info("SMPPSessionBean: setup complete");
+    }
+
+    @AfterReturning(pointcut = "execution(* com.opteral.springsms.smsc.SMSCSessionListener.onStateChange(..))")
+    public void afterSessionListener(JoinPoint joinPoint) {
+        SessionState newState = (SessionState)joinPoint.getArgs()[0];
+        logger.error("SessionListener: new session state :" + newState.toString());
+    }
+
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCImp.sendSMS(..))", returning="result")
+    public void onSubmitShortMessage2(Object result) {
+        logger.info("SMSCImp: Message submitted, message_id is " + result);
+
     }
 }

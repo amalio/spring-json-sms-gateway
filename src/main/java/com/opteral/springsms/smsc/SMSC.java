@@ -9,5 +9,5 @@ import java.io.IOException;
 
 
 public interface SMSC {
-    public void sendSMS(SMS sms) throws GatewayException, IOException;
+    public String sendSMS(SMS sms) throws GatewayException, IOException;
 }

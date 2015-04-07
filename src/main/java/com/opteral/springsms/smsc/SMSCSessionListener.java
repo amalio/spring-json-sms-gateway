@@ -1,24 +1,18 @@
 package com.opteral.springsms.smsc;
 
 
-import com.opteral.springsms.sender.SenderContext;
-import org.apache.log4j.Logger;
 import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.SessionStateListener;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-//TODO MAkeme a bean!
+@Profile("!test")
+@Component
 public class SMSCSessionListener implements SessionStateListener {
 
-    private static final Logger logger = Logger.getLogger(SMSCSessionListener.class);
-
+    @Override
     public void onStateChange(SessionState newState, SessionState oldState, Object source)
     {
-        if (newState.equals(SessionState.CLOSED))
-        {
-            SenderContext.iniciado.set(false);
-
-            //TODO log this
-
-        }
+        //called for AOP logging
     }
 }

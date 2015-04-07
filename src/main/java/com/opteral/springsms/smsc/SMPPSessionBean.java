@@ -8,8 +8,10 @@ import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.BindParameter;
 import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.SMPPSession;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -20,21 +22,25 @@ public class SMPPSessionBean extends SMPPSession {
     @Autowired
     MessageReceiverListener smscListener;
 
+    @Autowired
+    SMSCSessionListener smscSessionListener;
+
     public void setUp()
     {
         setMessageReceiverListener(smscListener);
 
         setTransactionTimer(5000L);
 
-        addSessionStateListener(new SMSCSessionListener());
+        addSessionStateListener(smscSessionListener);
 
         connect();
     }
 
-    public void reconnect()
+    public void checkConnection()
     {
-        if (getSessionState() != SessionState.BOUND_TRX)
+        if (!getSessionState().isBound())
         {
+            close();
             connect();
         }
     }
@@ -48,8 +54,4 @@ public class SMPPSessionBean extends SMPPSession {
         }
     }
 
-    @Override
-    public void close() {
-        unbindAndClose();
-    }
 }

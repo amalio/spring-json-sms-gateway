@@ -24,13 +24,11 @@ import java.io.IOException;
 @Component
 public class SMSCImp implements SMSC {
 
-    private static final Logger logger = Logger.getLogger(SMSCImp.class);
-
     @Autowired
     SMPPSessionBean smppSessionBean;
 
     @Override
-    public void sendSMS(SMS sms) throws GatewayException, IOException {
+    public String sendSMS(SMS sms) throws GatewayException, IOException {
 
         final RegisteredDelivery registeredDelivery = new RegisteredDelivery();
         registeredDelivery.setSMSCDeliveryReceipt(SMSCDeliveryReceipt.SUCCESS_FAILURE);
@@ -41,36 +39,16 @@ public class SMSCImp implements SMSC {
 
         byte[] msgText = sms.getText().getBytes("ISO-8859-1");
 
+        String messageId = "";
         try
         {
-            String messageId = smppSessionBean.submitShortMessage("CMT", TypeOfNumber.ALPHANUMERIC, NumberingPlanIndicator.UNKNOWN, sms.getSender(), TypeOfNumber.INTERNATIONAL, NumberingPlanIndicator.UNKNOWN, sms.getMsisdn(), new ESMClass(), (byte) 0, (byte) 1, null, null, registeredDelivery, (byte) 0, dataCoding, (byte) 0, msgText);
+            messageId = smppSessionBean.submitShortMessage("CMT", TypeOfNumber.ALPHANUMERIC, NumberingPlanIndicator.UNKNOWN, sms.getSender(), TypeOfNumber.INTERNATIONAL, NumberingPlanIndicator.UNKNOWN, sms.getMsisdn(), new ESMClass(), (byte) 0, (byte) 1, null, null, registeredDelivery, (byte) 0, dataCoding, (byte) 0, msgText);
             sms.setIdSMSC(messageId);
-            logger.info("Message submitted, message_id is " + messageId);
 
         }
-        catch (PDUException e)
-        {
-            logger.error("Invalid PDU parameter", e);
-        }
-        catch (ResponseTimeoutException e)
-        {
-            logger.error("Response timeout", e);
-        }
-        catch (InvalidResponseException e)
-        {
-            logger.error("Receive invalid respose", e);
-        }
-        catch (NegativeResponseException e)
-        {
-            logger.error("Receive negative response", e);
-        }
-        catch (IOException e)
-        {
-            logger.error("IO error occur", e);
+        catch (Exception ignored) {}
 
-        }
-
-
+        return messageId;
     }
 
 
