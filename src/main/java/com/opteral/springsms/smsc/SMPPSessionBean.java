@@ -9,8 +9,10 @@ import org.jsmpp.session.BindParameter;
 import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.SMPPSession;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
 @Profile("!test")
 @Component
 public class SMPPSessionBean extends SMPPSession {
