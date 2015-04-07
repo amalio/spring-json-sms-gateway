@@ -14,6 +14,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component("smsdaojdbc")
@@ -98,6 +99,11 @@ public class SMSDAOJDBC implements SMSDAO{
 
     @Override
     public void updateSMS_Status(ACK ack) throws GatewayException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public List<SMS> getSMSForSend(java.sql.Date aFecha) throws GatewayException {
         throw new NotImplementedException();
     }
 

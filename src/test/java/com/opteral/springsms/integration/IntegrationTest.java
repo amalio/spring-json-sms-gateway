@@ -1,9 +1,10 @@
-package com.opteral.springsms.web;
+package com.opteral.springsms.integration;
 
 import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
+import com.opteral.springsms.web.WebConfig;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
