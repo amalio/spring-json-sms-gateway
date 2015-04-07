@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 public class ProcessorImpTest {
 
     private CheckerSMS checkerSMSMock;
-    private ProcesorImp processService;
+    private ProcessorImp processService;
     private RequestJSON requestJSON;
     private SmsDao smsDaoMock;
     private SpringAuthentication authenticationMock;
@@ -39,14 +39,13 @@ public class ProcessorImpTest {
         requestJSON = new RequestJSON();
         JSON_SMS jsonsms1 = new JSON_SMS();
         JSON_SMS jsonsms2 = new JSON_SMS();
-        jsonsms2.setId(500);
         requestJSON.getSms_request().add(jsonsms1);
         requestJSON.getSms_request().add(jsonsms2);
 
         checkerSMSMock = mock(CheckerSMS.class);
         smsDaoMock = mock(SmsDao.class);
         authenticationMock = mock(SpringAuthentication.class);
-        processService = new ProcesorImp(checkerSMSMock, smsDaoMock, authenticationMock);
+        processService = new ProcessorImp(checkerSMSMock, smsDaoMock, authenticationMock);
 
     }
 
@@ -58,7 +57,7 @@ public class ProcessorImpTest {
     }
 
     @Test
-    public void requestSMSOk() throws GatewayException {
+    public void requestSMSNewsOk() throws GatewayException {
 
         when(authenticationMock.getUser()).thenReturn(user);
 
@@ -71,8 +70,29 @@ public class ProcessorImpTest {
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
 
         ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
-        verify(smsDaoMock, times(1)).insert(argument.capture());
-        verify(smsDaoMock, times(1)).update(argument.capture());
+        verify(smsDaoMock, times(2)).insert(argument.capture());
+        assertEquals(10, argument.getValue().getUser_id());
+
+
+
+    }
+
+    @Test
+    public void requestSMSUpdateOk() throws GatewayException {
+        requestJSON.getSms_request().get(0).setId(500);
+        requestJSON.getSms_request().get(1).setId(501);
+        when(authenticationMock.getUser()).thenReturn(user);
+
+        ResponseJSON responseJSON = processService.post(requestJSON);
+
+
+        assertEquals(ResponseJSON.ResponseCode.OK, responseJSON.getResponse_code());
+        assertTrue(responseJSON.getSms_responses().get(0).isRequest_ok());
+        assertTrue(responseJSON.getSms_responses().get(1).isRequest_ok());
+        verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
+
+        ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
+        verify(smsDaoMock, times(2)).update(argument.capture());
         assertEquals(10, argument.getValue().getUser_id());
 
 
@@ -92,8 +112,7 @@ public class ProcessorImpTest {
         assertFalse(responseJSON.getSms_responses().get(1).isRequest_ok());
 
         verify(checkerSMSMock).check(anyListOf(JSON_SMS.class));
-        verify(smsDaoMock, times(1)).insert(any(SMS.class));
-        verify(smsDaoMock, times(1)).update(any(SMS.class));
+        verify(smsDaoMock, times(2)).insert(any(SMS.class));
 
 
     }

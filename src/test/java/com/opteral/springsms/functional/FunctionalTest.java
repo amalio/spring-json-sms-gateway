@@ -5,6 +5,7 @@ import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.Parser;
 import com.opteral.springsms.json.RequestJSON;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -15,6 +16,7 @@ public class FunctionalTest {
 
     private static final Logger logger = Logger.getLogger(FunctionalTest.class);
 
+    @Ignore
     @Test
     public void testFuncional() throws IOException {
         logger.info("Starting TEST |||||||||||||||||||| ------->>>>>>>>>>>>>>>> ");

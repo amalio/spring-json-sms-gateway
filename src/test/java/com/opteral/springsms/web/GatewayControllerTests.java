@@ -1,6 +1,6 @@
 package com.opteral.springsms.web;
 
-import com.opteral.springsms.Procesor;
+import com.opteral.springsms.Processor;
 import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.exceptions.GatewayException;;
@@ -42,7 +42,7 @@ public class GatewayControllerTests {
     protected WebApplicationContext wac;
 
     @Mock
-    Procesor procesorMock;
+    Processor processorMock;
 
     @InjectMocks
     GatewayController gatewayController;
@@ -75,7 +75,7 @@ public class GatewayControllerTests {
 
     @Test
     public void gatewayExceptionTest() throws Exception {
-        doThrow(new GatewayException("general error")).when(procesorMock).post(any(RequestJSON.class));
+        doThrow(new GatewayException("general error")).when(processorMock).post(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))
@@ -88,7 +88,7 @@ public class GatewayControllerTests {
 
     @Test
     public void otherExceptionTest() throws Exception {
-        doThrow(new RuntimeException()).when(procesorMock).post(any(RequestJSON.class));
+        doThrow(new RuntimeException()).when(processorMock).post(any(RequestJSON.class));
         mockMvc.perform(post("/gateway")
                 .contentType(TestHelper.APPLICATION_JSON_UTF8)
                 .content(TestHelper.convertRequestJSONtoBytes(requestJSON)))

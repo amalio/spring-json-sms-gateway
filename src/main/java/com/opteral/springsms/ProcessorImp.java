@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component(value= WebApplicationContext.SCOPE_REQUEST)
-public class ProcesorImp implements Procesor {
+public class ProcessorImp implements Processor {
 
     @Autowired
     private CheckerSMS checkerSMS;
@@ -29,12 +29,12 @@ public class ProcesorImp implements Procesor {
 
     private boolean forDelete;
 
-    public ProcesorImp()
+    public ProcessorImp()
     {
 
     }
 
-    public ProcesorImp(CheckerSMS checkerSMS, SmsDao smsDao, SpringAuthentication authentication)
+    public ProcessorImp(CheckerSMS checkerSMS, SmsDao smsDao, SpringAuthentication authentication)
     {
         this.checkerSMS = checkerSMS;
         this.smsDao = smsDao;
@@ -91,9 +91,9 @@ public class ProcesorImp implements Procesor {
             if (forDelete)
                 smsDao.delete(sms);
             else if (sms.getId() > 0)
-                smsDao.insert(sms);
-            else
                 smsDao.update(sms);
+            else
+                smsDao.insert(sms);
         }
     }
 
