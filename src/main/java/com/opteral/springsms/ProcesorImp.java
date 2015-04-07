@@ -70,7 +70,7 @@ public class ProcesorImp implements Procesor {
         {
             try
             {
-                SMS sms = new SMS(jsonSMS, authentication.getUserId());
+                SMS sms = new SMS(jsonSMS, authentication.getUser().getId());
 
                 persist(sms);
 

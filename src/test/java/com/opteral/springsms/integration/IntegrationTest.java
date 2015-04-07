@@ -76,6 +76,9 @@ public class IntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("response_code").value("OK"))
+                .andExpect(jsonPath("$.sms_responses[0].request_ok").value(true))
+                .andExpect(jsonPath("$.sms_responses[1].request_ok").value(true))
+
         ;
 
     }

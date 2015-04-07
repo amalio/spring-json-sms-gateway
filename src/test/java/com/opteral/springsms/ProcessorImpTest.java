@@ -7,6 +7,7 @@ import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
 import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.model.SMS;
+import com.opteral.springsms.model.User;
 import com.opteral.springsms.validation.CheckerSMS;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +28,14 @@ public class ProcessorImpTest {
     private RequestJSON requestJSON;
     private SmsDao smsDaoMock;
     private SpringAuthentication authenticationMock;
+    private User user;
 
     @Before
     public void init()
     {
+        user = new User();
+        user.setId(10);
+
         requestJSON = new RequestJSON();
         JSON_SMS jsonsms1 = new JSON_SMS();
         JSON_SMS jsonsms2 = new JSON_SMS();
@@ -55,7 +60,7 @@ public class ProcessorImpTest {
     @Test
     public void requestSMSOk() throws GatewayException {
 
-        when(authenticationMock.getUserId()).thenReturn(10);
+        when(authenticationMock.getUser()).thenReturn(user);
 
         ResponseJSON responseJSON = processService.post(requestJSON);
 
@@ -76,7 +81,7 @@ public class ProcessorImpTest {
 
     @Test
     public void smsDAOFails() throws GatewayException {
-        when(authenticationMock.getUserId()).thenReturn(10);
+        when(authenticationMock.getUser()).thenReturn(user);
         doThrow(new GatewayException("msg")).when(smsDaoMock).insert(any(SMS.class));
         doThrow(new GatewayException("msg")).when(smsDaoMock).update(any(SMS.class));
 
@@ -98,7 +103,7 @@ public class ProcessorImpTest {
 
         requestJSON.getSms_request().get(0).setTest(true);
         requestJSON.getSms_request().get(1).setTest(true);
-        when(authenticationMock.getUserId()).thenReturn(10);
+        when(authenticationMock.getUser()).thenReturn(user);
 
         ResponseJSON responseJSON = processService.post(requestJSON);
 
@@ -132,7 +137,7 @@ public class ProcessorImpTest {
     @Test
     public void requestForDeleteOk() throws GatewayException {
 
-        when(authenticationMock.getUserId()).thenReturn(10);
+        when(authenticationMock.getUser()).thenReturn(user);
 
         ResponseJSON responseJSON = processService.delete(requestJSON);
 
