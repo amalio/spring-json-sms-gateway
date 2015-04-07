@@ -22,6 +22,7 @@ import org.jsmpp.bean.NumberingPlanIndicator;
 import org.jsmpp.bean.TypeOfNumber;
 import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.BindParameter;
+import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.SMPPSession;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,13 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.PostConstruct;
 
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages={"com.opteral.springsms"},
     excludeFilters={
         @Filter(type=FilterType.ANNOTATION, value=EnableWebMvc.class)
@@ -49,7 +52,7 @@ public class RootConfig {
     Sender sender;
 
     @Autowired
-    SMSCListener smscListener;
+    MessageReceiverListener smscListener;
 
     public void setSender(Sender sender) {
         this.sender = sender;

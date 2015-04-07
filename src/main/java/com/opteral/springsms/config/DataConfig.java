@@ -48,4 +48,9 @@ public class DataConfig {
     }
     */
 
+    @Bean
+    public LoggerAOP loggerAOP(){
+        return new LoggerAOP();
+    }
+
 }

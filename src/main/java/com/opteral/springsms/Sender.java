@@ -34,7 +34,6 @@ public class Sender {
 
         try {
             List<SMS> lista = smsDao.getSMSForSend(aFecha);
-            logThis("Hay "+lista.size()+" mensajes para envío");
             processList(lista);
 
         }
