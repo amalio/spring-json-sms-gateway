@@ -27,7 +27,7 @@ All requests must include the http basic authentication credentials. And simply 
     "sms_request": [
     {
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "message text"
     }
   ]
@@ -40,7 +40,7 @@ All requests must include the http basic authentication credentials. And simply 
   "sms_request": [
     {
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "message text",
       "subid": "subid1",
       "ack_url": "http://www.anurl.com/ack"
@@ -49,13 +49,13 @@ All requests must include the http basic authentication credentials. And simply 
 }
 ```
 
-### Schedule an SMS
+### Schedule a SMS
 ```json
 {
     "sms_request": [
     {
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "message text",
       "datetime": "2015-12-27 10:00"
     }
@@ -70,7 +70,7 @@ All requests must include the http basic authentication credentials. And simply 
     {
       "id": "subid1",
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "message text",
       "datetime": "2015-12-27 11:00"
     }
@@ -96,7 +96,7 @@ All requests must include the http basic authentication credentials. And simply 
     {
       "id": 0,
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "the text of SMS with an ñ",
       "subid": "subid1",
       "ack_url": "http://www.opteral.com/ack",
@@ -106,7 +106,7 @@ All requests must include the http basic authentication credentials. And simply 
     {
       "id": null,
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "the text of SMS with an ñ",
       "datetime": "2015-12-27 10:00",
       "subid": "subid2",
@@ -116,7 +116,7 @@ All requests must include the http basic authentication credentials. And simply 
     {
       "id": 1,
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "the text of SMS with an ñ",
       "datetime": "2015-12-27 11:00",
       "subid": "subid3",
@@ -125,7 +125,7 @@ All requests must include the http basic authentication credentials. And simply 
     },
     {
       "msisdn": "34646974525",
-      "sender": "sender_str",
+      "sender": "amalio",
       "text": "the text of SMS with an ñ",
       "datetime": null,
       "test": true,
