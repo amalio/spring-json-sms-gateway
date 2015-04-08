@@ -3,7 +3,6 @@ package com.opteral.springsms;
 
 import com.opteral.springsms.config.ConfigValues;
 
-import javax.ws.rs.client.ClientBuilder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +25,7 @@ public class Utilities {
         ConfigValues.SMSC_PORT = Integer.parseInt(properties.getProperty("smsc_port"));
         ConfigValues.SMSC_USERNAME = properties.getProperty("smsc_username");
         ConfigValues.SMSC_PASSWORD = properties.getProperty("smsc_password");
+        ConfigValues.DATASOURCE = properties.getProperty("datasource");
 
         ConfigValues.MAX_SMS_SIZE = Integer.parseInt(properties.getProperty("sms_max_size"));
         ConfigValues.SENDER_MAX_SIZE = Integer.parseInt(properties.getProperty("sender_max_size"));

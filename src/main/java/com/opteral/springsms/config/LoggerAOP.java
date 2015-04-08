@@ -63,7 +63,8 @@ public class LoggerAOP {
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCImp.sendSMS(..))", returning="result")
     public void onSubmitShortMessage2(Object result) {
-        logger.info("SMSCImp: Message submitted, message_id is " + result);
+        if (!result.equals(""))
+            logger.info("SMSCImp: Message submitted, message_id is " + result);
 
     }
 
@@ -72,9 +73,10 @@ public class LoggerAOP {
         logger.error("ACKSender: Failed sending ACK: "+error.getMessage());
     }
 
-    @AfterReturning(pointcut ="execution(* com.opteral.springsms.HttpGetSender.sendGet(..))")
-    public void afterSendingACK(JoinPoint joinPoint) {
-        logger.info("HttpGetSender: ACK GET sended: "+joinPoint.getArgs()[0]);
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.sender.ACKSender.sendACK(..))", returning="result")
+    public void afterSendingACK(Object result) {
+        if (!result.equals(""))
+            logger.info("HttpGetSender: ACK GET sended: "+result);
     }
 
 }

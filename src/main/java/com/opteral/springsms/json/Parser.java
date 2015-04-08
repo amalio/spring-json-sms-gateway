@@ -2,26 +2,11 @@ package com.opteral.springsms.json;
 
 public class Parser {
 
-    public static String getJSON (ResponseJSON responseJSON)  {
+    public static String getJSON (Object object)  {
 
         try
         {
-            return  GsonFactory.getGson().toJson(responseJSON);
-
-        }
-        catch (Exception e)
-        {
-            return "incorrect format";
-
-        }
-
-    }
-
-    public static String getJSON (RequestJSON requestJSON)  {
-
-        try
-        {
-            return  GsonFactory.getGson().toJson(requestJSON);
+            return  GsonFactory.getGson().toJson(object);
 
         }
         catch (Exception e)

@@ -25,7 +25,7 @@ public class DataConfig {
         DataSource dataSource = null;
         JndiTemplate jndi = new JndiTemplate();
         try {
-            dataSource = (DataSource) jndi.lookup("java:jboss/datasources/jjsgDS");
+            dataSource = (DataSource) jndi.lookup("java:jboss/datasources/"+ConfigValues.DATASOURCE);
         } catch (NamingException e) {
             //TODO log here
             throw new RuntimeException("failed getting datasource");
