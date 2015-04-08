@@ -14,10 +14,12 @@ public class RowMappers {
 
             sms.setId(resultSet.getLong("id"));
             sms.setUser_id(resultSet.getInt("user_id"));
+            sms.setIdSMSC(resultSet.getString("idSMSC"));
             sms.setMsisdn(resultSet.getString("msisdn"));
             sms.setSender(resultSet.getString("sender"));
             sms.setText(resultSet.getString("text"));
             sms.setDatetimeScheduled(resultSet.getTimestamp("datetime_scheduled"));
+            sms.setDatetimeLastModified(resultSet.getTimestamp("datetime_lastmodified"));
             sms.setTest(false);
             sms.setAckurl(resultSet.getString("ackurl"));
             sms.setSubid(resultSet.getString("subid"));

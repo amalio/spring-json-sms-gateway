@@ -33,9 +33,5 @@ public class Utilities {
 
     }
 
-    public static void sendGet(String url)  {
 
-        ClientBuilder.newClient().target(url).request().async().get();
-
-    }
 }

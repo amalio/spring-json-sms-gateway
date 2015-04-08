@@ -75,6 +75,21 @@ public class SmsDaoJDBCTest {
     }
 
     @Test
+    @DatabaseSetup("/dataset/sms-onsmsc.xml")
+    public void getSMSTestFromIdSMSC() throws Exception {
+        SMS sms = smsDaoJDBC.getSMSfromIdSMSC("idSMSC1");
+        assertNotNull(sms);
+        assertEquals(1, sms.getId());
+        assertEquals(EntitiesHelper.USER_ID, sms.getUser_id());
+        assertEquals(EntitiesHelper.SENDER, sms.getSender());
+        assertEquals(EntitiesHelper.MSISDN, sms.getMsisdn());
+        assertEquals(EntitiesHelper.TEXT, sms.getText());
+        assertEquals(EntitiesHelper.SUBID, sms.getSubid());
+        assertEquals(EntitiesHelper.ACKURL, sms.getAckurl());
+        assertEquals(SMS.SMS_Status.ONSMSC, sms.getSms_status());
+    }
+
+    @Test
     @DatabaseSetup("/dataset/empty.xml")
     @ExpectedDatabase(value="/dataset/noid-sms-scheduled.xml", assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED)
     public void insertSMSTest() throws Exception {

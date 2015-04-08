@@ -25,6 +25,9 @@ public class SMSCListener implements MessageReceiverListener {
     SmsDaoJDBC smsdao;
 
     @Autowired
+    ACKSender ackSender;
+
+    @Autowired
     DeliveryReceiptProcesor deliveryReceiptProcesor;
 
     @Override
@@ -45,7 +48,7 @@ public class SMSCListener implements MessageReceiverListener {
                     public void run()
                     {
                         try {
-                            processACK(smsdao,ack);
+                            processACK(ack);
                         } catch (GatewayException ignored) {
 
                         }
@@ -79,10 +82,9 @@ public class SMSCListener implements MessageReceiverListener {
         return null;
     }
 
-    private void processACK(SmsDao smsDao, ACK ack) throws GatewayException {
-        smsDao.updateSMS_Status(ack);
-
-        ACKSender.sendACK(ack, smsDao);
+    private void processACK(ACK ack) throws GatewayException {
+        smsdao.updateSMS_Status(ack);
+        ackSender.sendACK(ack);
     }
 
 

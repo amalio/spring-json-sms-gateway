@@ -25,6 +25,7 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
     private static final String DELETE_SMS ="DELETE FROM sms WHERE id=? AND user_id=?";
     private static final String UPDATE_STATUS ="UPDATE sms SET status = ?, datetime_lastmodified = ? WHERE idSMSC = ?";
     private static final String GET_FOR_SEND ="SELECT * FROM sms WHERE status < ? AND (datetime_scheduled <= ? OR datetime_scheduled is NULL )";
+    private static final String SELECT_SMS_BY_SMSCID = "SELECT * FROM sms WHERE idSMSC = ?";
 
 
     @Override
@@ -112,6 +113,15 @@ public class SmsDaoJDBC extends abstractDao implements SmsDao {
                     aFecha
             };
             return jdbcTemplate.query(GET_FOR_SEND, new RowMappers.SMSRowMapper(), args);
+        } catch (EmptyResultDataAccessException e) {
+            throw new GatewayException ("Error: Failed recovering sms");
+        }
+    }
+
+    @Override
+    public SMS getSMSfromIdSMSC(String idSMSC) throws GatewayException {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_SMS_BY_SMSCID, new RowMappers.SMSRowMapper(), idSMSC);
         } catch (EmptyResultDataAccessException e) {
             throw new GatewayException ("Error: Failed recovering sms");
         }

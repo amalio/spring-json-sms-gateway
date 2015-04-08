@@ -14,4 +14,5 @@ public interface SmsDao {
     SMS getSMS(long id) throws GatewayException;
     void updateSMS_Status(ACK ack) throws GatewayException;
     List<SMS> getSMSForSend(Date aFecha) throws GatewayException;
+    SMS getSMSfromIdSMSC(String idSMSC) throws GatewayException;
 }

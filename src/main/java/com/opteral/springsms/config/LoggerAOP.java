@@ -58,7 +58,7 @@ public class LoggerAOP {
     @AfterReturning(pointcut = "execution(* com.opteral.springsms.smsc.SMSCSessionListener.onStateChange(..))")
     public void afterSessionListener(JoinPoint joinPoint) {
         SessionState newState = (SessionState)joinPoint.getArgs()[0];
-        logger.error("SessionListener: new session state :" + newState.toString());
+        logger.info("SessionListener: new session state :" + newState.toString());
     }
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCImp.sendSMS(..))", returning="result")
@@ -66,4 +66,15 @@ public class LoggerAOP {
         logger.info("SMSCImp: Message submitted, message_id is " + result);
 
     }
+
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.sender.ACKSender.sendACK(..))", throwing="error")
+    public void failsOnSendACK(Throwable error) {
+        logger.error("ACKSender: Failed sending ACK: "+error.getMessage());
+    }
+
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.HttpGetSender.sendGet(..))")
+    public void afterSendingACK(JoinPoint joinPoint) {
+        logger.info("HttpGetSender: ACK GET sended: "+joinPoint.getArgs()[0]);
+    }
+
 }
