@@ -9,5 +9,6 @@ public class ConfigValues {
     public static int SMSC_PORT;
     public static String SMSC_USERNAME;
     public static String SMSC_PASSWORD;
+    public static String DATASOURCE = "jjsgDS";
 
 }

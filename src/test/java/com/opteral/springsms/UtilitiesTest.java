@@ -27,5 +27,6 @@ public class UtilitiesTest {
         assertEquals(140, ConfigValues.MAX_SMS_SIZE);
         assertEquals(11, ConfigValues.SENDER_MAX_SIZE);
         assertEquals(20, ConfigValues.SUBID_MAX_SIZE);
+        assertEquals("jjsgDS", ConfigValues.DATASOURCE);
     }
 }
