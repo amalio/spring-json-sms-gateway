@@ -39,23 +39,7 @@ public class SMSCListener implements MessageReceiverListener {
             {
                 DeliveryReceipt delReceipt = deliverSm.getShortMessageAsDeliveryReceipt();
                 deliveryReceiptProcesor.setDeliveryReceipt(delReceipt);
-                final ACK ack = deliveryReceiptProcesor.getACK();
-
-
-                Runnable r = new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try {
-                            processACK(ack);
-                        } catch (GatewayException ignored) {
-
-                        }
-                    }
-                };
-                new Thread(r).start();
-
+                processACKinBackground(deliveryReceiptProcesor.getACK());
             }
             catch (InvalidDeliveryReceiptException ignored) {
 
@@ -74,7 +58,6 @@ public class SMSCListener implements MessageReceiverListener {
 
     @Override
     public void onAcceptAlertNotification(AlertNotification alertNotification) {
-
     }
 
     @Override
@@ -82,14 +65,28 @@ public class SMSCListener implements MessageReceiverListener {
         return null;
     }
 
-    private void processACK(ACK ack) throws GatewayException {
-        smsdao.updateSMS_Status(ack);
-        ackSender.sendACK(ack);
+    private void processACKinBackground(final ACK ack)
+    {
+        Runnable r = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+              processACK(ack);
+            }
+        };
+        new Thread(r).start();
     }
 
+    private void processACK(ACK ack) {
 
+        try {
+            smsdao.updateSMS_Status(ack);
+            ackSender.sendACK(ack);
+        } catch (GatewayException ignored) {
+        }
 
-
+    }
 
 
 }
