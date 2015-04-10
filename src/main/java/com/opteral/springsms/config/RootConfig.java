@@ -6,6 +6,7 @@ import com.opteral.springsms.sender.Sender;
 import com.opteral.springsms.sender.SenderContext;
 import com.opteral.springsms.smsc.*;
 import org.apache.log4j.Logger;
+import org.jsmpp.session.SMPPSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -25,6 +26,11 @@ public class RootConfig {
     @Bean
     public LoggerAOP loggerAOP(){
         return new LoggerAOP();
+    }
+
+    @Bean
+    public SMPPSession sMPPSession(){
+        return new SMPPSession();
     }
 
     @Autowired

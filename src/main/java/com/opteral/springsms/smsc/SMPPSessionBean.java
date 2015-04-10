@@ -15,9 +15,11 @@ import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Profile("!test")
 @Component
-public class SMPPSessionBean extends SMPPSession {
+public class SMPPSessionBean {
 
     @Autowired
     MessageReceiverListener smscListener;
@@ -25,33 +27,26 @@ public class SMPPSessionBean extends SMPPSession {
     @Autowired
     SMSCSessionListener smscSessionListener;
 
-    public void setUp()
-    {
-        setMessageReceiverListener(smscListener);
+    @Autowired
+    SMPPSession smppSession;
 
-        setTransactionTimer(5000L);
+    public SMPPSession getSmppSession() {
+        return smppSession;
+    }
 
-        addSessionStateListener(smscSessionListener);
+    public void setUp() throws IOException {
+        smppSession.setMessageReceiverListener(smscListener);
+
+        smppSession.setTransactionTimer(5000L);
+
+        smppSession.addSessionStateListener(smscSessionListener);
 
         connect();
     }
 
-    public void checkConnection()
-    {
-        if (!getSessionState().isBound())
-        {
-            close();
-            connect();
-        }
-    }
+    public void connect() throws IOException {
 
-    private void connect()
-    {
-        try {
-            connectAndBind(ConfigValues.SMSC_IP, ConfigValues.SMSC_PORT, new BindParameter(BindType.BIND_TRX, ConfigValues.SMSC_USERNAME, ConfigValues.SMSC_PASSWORD, "cp", TypeOfNumber.UNKNOWN, NumberingPlanIndicator.UNKNOWN, null));
-        }
-        catch (Exception ignored) {
-        }
+        smppSession.connectAndBind(ConfigValues.SMSC_IP, ConfigValues.SMSC_PORT, new BindParameter(BindType.BIND_TRX, ConfigValues.SMSC_USERNAME, ConfigValues.SMSC_PASSWORD, "cp", TypeOfNumber.UNKNOWN, NumberingPlanIndicator.UNKNOWN, null));
     }
 
 }

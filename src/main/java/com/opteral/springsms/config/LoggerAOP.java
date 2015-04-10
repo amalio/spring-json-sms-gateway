@@ -50,7 +50,7 @@ public class LoggerAOP {
         logger.error("SMPPSessionBean: " + error.getMessage());
     }
 
-    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.submitShortMessage(..))")
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.setUp(..))")
     public void afterSetup() {
         logger.info("SMPPSessionBean: setup complete");
     }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,7 +27,7 @@ public class SenderContext {
 
     @PostConstruct
     public void init(){
-        smppSessionBean.setUp();
+        setUp();
         setupWorkers();
     }
 
@@ -36,23 +37,43 @@ public class SenderContext {
         final Runnable runTasks = new Runnable()
         {
             public void run() {
-
-                checkConnection();
-                sendSMSScheduled();
-
+                 sendOrConnect();
             }
         };
 
         scheduledExecutorService.scheduleWithFixedDelay(runTasks,0, 5, TimeUnit.SECONDS);
     }
 
-    private void checkConnection()
+    private void sendOrConnect()
     {
-        smppSessionBean.checkConnection();
+        if (isConnected())
+            sendSMSScheduled();
+        else
+            connect();
+    }
+
+    private void setUp(){
+        try {
+            smppSessionBean.setUp();
+        } catch (IOException ignored) {
+
+        }
+    }
+
+    private void connect(){
+        try {
+            smppSessionBean.connect();
+        } catch (IOException ignored) {
+
+        }
     }
 
     private void sendSMSScheduled()
     {
         sender.send(new java.sql.Date(Instant.now().toEpochMilli()));
+    }
+
+    private boolean isConnected(){
+        return smppSessionBean.getSmppSession().getSessionState().isBound();
     }
 }
