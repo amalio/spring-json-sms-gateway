@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.PostConstruct;
@@ -34,26 +35,10 @@ public class RootConfig {
     }
 
     @Autowired
-    @Qualifier("config_swich")
-    boolean configSwich;
-
-    final Logger logger = Logger.getLogger(RootConfig.class);
+    Environment env;
 
     @PostConstruct
     public void init()
-    {
-        if (isTest())
-        {
-            logger.info("|||||||||||||| TEST CONTEXT ||||||||||||||");
-            return;
-        }
-
-        loadConfig();
-
-        logger.info("|||||||||||||| GATEWAY STARTED ||||||||||||||");
-    }
-
-    private void loadConfig()
     {
         try {
             Utilities.getConfig(isTest());
@@ -66,6 +51,11 @@ public class RootConfig {
 
     private boolean isTest()
     {
-        return configSwich;
+        String[] profiles = env.getActiveProfiles();
+        for (String profile : profiles){
+            if (profile.equals("test"))
+                return true;
+        }
+        return false;
     }
 }
