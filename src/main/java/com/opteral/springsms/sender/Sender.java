@@ -60,7 +60,6 @@ public class Sender {
         smsc.sendSMS(sms);
 
         if (isThereAreValidIdSMSC(sms)) {
-            sms.setSms_status(SMS.SMS_Status.ONSMSC);
             smsDao.update(sms);
         }
     }
