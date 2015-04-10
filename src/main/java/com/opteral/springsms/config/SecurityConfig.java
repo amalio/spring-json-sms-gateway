@@ -1,4 +1,4 @@
-package com.opteral.springsms.web;
+package com.opteral.springsms.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

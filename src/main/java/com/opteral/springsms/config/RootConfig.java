@@ -1,14 +1,8 @@
 package com.opteral.springsms.config;
 
 import com.opteral.springsms.Utilities;
-import com.opteral.springsms.sender.ACKSender;
-import com.opteral.springsms.sender.Sender;
-import com.opteral.springsms.sender.SenderContext;
-import com.opteral.springsms.smsc.*;
-import org.apache.log4j.Logger;
 import org.jsmpp.session.SMPPSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.env.Environment;

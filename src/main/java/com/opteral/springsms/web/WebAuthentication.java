@@ -1,4 +1,4 @@
-package com.opteral.springsms;
+package com.opteral.springsms.web;
 
 
 import com.opteral.springsms.database.UserDao;
@@ -13,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-public class SpringAuthentication {
+public class WebAuthentication {
 
     @Autowired
     UserDao userDao;

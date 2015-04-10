@@ -1,7 +1,5 @@
 package com.opteral.springsms.config;
 
-import com.opteral.springsms.config.RootConfig;
-import com.opteral.springsms.web.SecurityConfig;
 import com.opteral.springsms.web.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

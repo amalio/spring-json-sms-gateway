@@ -1,5 +1,6 @@
-package com.opteral.springsms.sender;
+package com.opteral.springsms.config;
 
+import com.opteral.springsms.sender.Sender;
 import com.opteral.springsms.smsc.SMPPSessionBean;
 import org.jsmpp.extra.SessionState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @Profile("!test")
 @Configuration
-public class SenderContext {
+public class SenderConfig {
     @Autowired
     Sender sender;
 

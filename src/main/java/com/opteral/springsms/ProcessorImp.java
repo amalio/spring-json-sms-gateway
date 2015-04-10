@@ -8,6 +8,7 @@ import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.json.SMS_Response;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.validation.CheckerSMS;
+import com.opteral.springsms.web.WebAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -25,7 +26,7 @@ public class ProcessorImp implements Processor {
     private SmsDao smsDao;
 
     @Autowired
-    private SpringAuthentication authentication;
+    private WebAuthentication authentication;
 
     private boolean forDelete;
 
@@ -34,7 +35,7 @@ public class ProcessorImp implements Processor {
 
     }
 
-    public ProcessorImp(CheckerSMS checkerSMS, SmsDao smsDao, SpringAuthentication authentication)
+    public ProcessorImp(CheckerSMS checkerSMS, SmsDao smsDao, WebAuthentication authentication)
     {
         this.checkerSMS = checkerSMS;
         this.smsDao = smsDao;

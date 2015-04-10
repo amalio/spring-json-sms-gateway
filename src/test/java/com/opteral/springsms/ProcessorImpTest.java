@@ -9,6 +9,7 @@ import com.opteral.springsms.json.ResponseJSON;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.model.User;
 import com.opteral.springsms.validation.CheckerSMS;
+import com.opteral.springsms.web.WebAuthentication;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +28,7 @@ public class ProcessorImpTest {
     private ProcessorImp processService;
     private RequestJSON requestJSON;
     private SmsDao smsDaoMock;
-    private SpringAuthentication authenticationMock;
+    private WebAuthentication authenticationMock;
     private User user;
 
     @Before
@@ -44,7 +45,7 @@ public class ProcessorImpTest {
 
         checkerSMSMock = mock(CheckerSMS.class);
         smsDaoMock = mock(SmsDao.class);
-        authenticationMock = mock(SpringAuthentication.class);
+        authenticationMock = mock(WebAuthentication.class);
         processService = new ProcessorImp(checkerSMSMock, smsDaoMock, authenticationMock);
 
     }
