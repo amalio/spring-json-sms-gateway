@@ -15,7 +15,6 @@ import java.util.List;
 @Profile("!test")
 @Component
 public class Sender {
-    private static final Logger logger = Logger.getLogger(Sender.class);
 
     @Autowired
     private SmsDao smsDao;
@@ -35,16 +34,11 @@ public class Sender {
     public void send(java.sql.Date aFecha)  {
 
         try {
-            List<SMS> lista = smsDao.getSMSForSend(aFecha);
-            processList(lista);
+            processList(smsDao.getSMSForSend(aFecha));
 
         }
-        catch (Exception e) {
-
-            logThis(e.getMessage());
+        catch (Exception ignored) {
         }
-
-
     }
 
     private void processList(List<SMS> lista)  {
@@ -55,9 +49,7 @@ public class Sender {
             {
                 processSMS(sms);
 
-            } catch (Exception e) {
-
-               logThis(e.getMessage());
+            } catch (Exception ignored) {
             }
 
         }
@@ -67,17 +59,16 @@ public class Sender {
 
         smsc.sendSMS(sms);
 
-        if (sms.getIdSMSC() != null && !sms.getIdSMSC().isEmpty()) {
-
+        if (isThereAreValidIdSMSC(sms)) {
             sms.setSms_status(SMS.SMS_Status.ONSMSC);
             smsDao.update(sms);
         }
     }
 
-
-    private void logThis(String mensaje)
-    {
-        logger.error(mensaje);
+    private boolean isThereAreValidIdSMSC(SMS sms){
+        return sms.getIdSMSC() != null && !sms.getIdSMSC().isEmpty();
     }
+
+
 
 }

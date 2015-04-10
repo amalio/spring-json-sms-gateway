@@ -19,14 +19,14 @@ public class LoggerAOP {
     @AfterThrowing(pointcut ="execution(* com.opteral.springsms.smsc.SMSCListener.onAcceptDeliverSm(..))", throwing="error")
     public void logAfter(Throwable error) {
 
-        logger.error("SMSCListerner: " + error.getMessage());
+        logger.error("SMSCListerner -> " + error.getMessage());
 
     }
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCListener.onAcceptAlertNotification(..))")
     public void logAfter(JoinPoint joinPoint) {
         AlertNotification alertNotification = (AlertNotification)joinPoint.getArgs()[0];
-        logger.warn("Incoming SMSC alert : " + alertNotification.getCommandId() + alertNotification.toString());
+        logger.warn("SMSCListener -> Incoming SMSC alert : " + alertNotification.getCommandId() + alertNotification.toString());
 
     }
 
@@ -47,36 +47,46 @@ public class LoggerAOP {
 
     @AfterThrowing(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.*(..))", throwing="error")
     public void failsOnSMPPSessionBean(Throwable error) {
-        logger.error("SMPPSessionBean: " + error.getMessage());
+        logger.error("SMPPSessionBean -> " + error.getMessage());
     }
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.setUp(..))")
     public void afterSetup() {
-        logger.info("SMPPSessionBean: setup complete");
+        logger.info("SMPPSessionBean -> setup complete");
     }
 
     @AfterReturning(pointcut = "execution(* com.opteral.springsms.smsc.SMSCSessionListener.onStateChange(..))")
     public void afterSessionListener(JoinPoint joinPoint) {
         SessionState newState = (SessionState)joinPoint.getArgs()[0];
-        logger.info("SessionListener: new session state :" + newState.toString());
+        logger.info("SessionListener -> new session state :" + newState.toString());
     }
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCImp.sendSMS(..))", returning="result")
     public void onSubmitShortMessage2(Object result) {
         if (!result.equals(""))
-            logger.info("SMSCImp: Message submitted, message_id is " + result);
+            logger.info("SMSCImp -> Message submitted, message_id is " + result);
 
     }
 
     @AfterThrowing(pointcut ="execution(* com.opteral.springsms.sender.ACKSender.sendACK(..))", throwing="error")
     public void failsOnSendACK(Throwable error) {
-        logger.error("ACKSender: Failed sending ACK: "+error.getMessage());
+        logger.error("ACKSender -> Failed sending ACK: "+error.getMessage());
     }
 
     @AfterReturning(pointcut ="execution(* com.opteral.springsms.sender.ACKSender.sendACK(..))", returning="result")
     public void afterSendingACK(Object result) {
         if (!result.equals(""))
-            logger.info("HttpGetSender: ACK GET sended: "+result);
+            logger.info("HttpGetSender -> ACK GET sended: "+result);
+    }
+
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.SmsDaoJDBC.*(..))", throwing="error")
+    public void failsOnSMSDaoJDBC(Throwable error) {
+        logger.error("SmsDaoJDBC -> Failed: "+error.getMessage());
+    }
+
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.UserDaoJDBC.*(..))", throwing="error")
+    public void failsOnSMSUserJDBC(Throwable error) {
+        logger.error("SmsUserJDBC -> Failed: "+error.getMessage());
     }
 
 }
