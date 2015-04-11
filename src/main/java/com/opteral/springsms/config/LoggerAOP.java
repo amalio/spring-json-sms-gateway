@@ -55,6 +55,11 @@ public class LoggerAOP {
         logger.info("SMPPSessionBean -> setup complete");
     }
 
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMPPSessionBean.disconnect(..))")
+    public void disconnected() {
+        logger.info("SMPPSessionBean -> disconnected");
+    }
+
     @AfterReturning(pointcut = "execution(* com.opteral.springsms.smsc.SMSCSessionListener.onStateChange(..))")
     public void afterSessionListener(JoinPoint joinPoint) {
         SessionState newState = (SessionState)joinPoint.getArgs()[0];

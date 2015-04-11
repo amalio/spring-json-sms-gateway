@@ -49,4 +49,9 @@ public class SMPPSessionBean {
         smppSession.connectAndBind(ConfigValues.SMSC_IP, ConfigValues.SMSC_PORT, new BindParameter(BindType.BIND_TRX, ConfigValues.SMSC_USERNAME, ConfigValues.SMSC_PASSWORD, "cp", TypeOfNumber.UNKNOWN, NumberingPlanIndicator.UNKNOWN, null));
     }
 
+    public void disconnect()
+    {
+        smppSession.unbindAndClose();
+    }
+
 }

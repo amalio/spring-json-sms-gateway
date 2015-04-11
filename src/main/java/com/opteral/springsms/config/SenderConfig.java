@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.Executors;
@@ -30,6 +31,11 @@ public class SenderConfig {
     public void init(){
         setUp();
         setupWorkers();
+    }
+
+    @PreDestroy
+    public void disconnect()  {
+       smppSessionBean.disconnect();
     }
 
     private void setupWorkers()
