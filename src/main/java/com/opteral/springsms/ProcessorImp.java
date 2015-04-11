@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component(value= WebApplicationContext.SCOPE_REQUEST)
+@Component
 public class ProcessorImp implements Processor {
 
     @Autowired
