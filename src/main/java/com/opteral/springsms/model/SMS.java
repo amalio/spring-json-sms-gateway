@@ -4,10 +4,17 @@ import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.json.JSON_SMS;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
+@Entity
+@Table(name = "sms")
 public class SMS {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
+
     private int user_id;
     private String idSMSC;
     private String msisdn;
@@ -15,9 +22,23 @@ public class SMS {
     private String text;
     private String subid;
     private String ackurl;
+
+    @Column(name = "status")
     private SMS_Status sms_status;
+
+
+    @Column(name = "datetime_scheduled")
     private Timestamp datetimeScheduled;
+
+
+    @Column(name = "datetime_lastmodified")
     private Timestamp datetimeLastModified;
+
+    @Column(name = "datetime_inbound", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datetimeInbound = new Date();
+
+    @Transient
     private boolean test;
 
 

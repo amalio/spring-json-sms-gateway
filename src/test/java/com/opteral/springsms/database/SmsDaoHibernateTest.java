@@ -37,8 +37,9 @@ public class SmsDaoHibernateTest {
         assertEquals(EntitiesHelper.TEXT, sms.getText());
         assertEquals(EntitiesHelper.SUBID, sms.getSubid());
         assertEquals(EntitiesHelper.ACKURL, sms.getAckurl());
-        assertEquals(null, sms.getDatetimeScheduled());
-        assertEquals(SMS.SMS_Status.ACCEPTD, sms.getSms_status());
+        assertEquals(SMS.SMS_Status.SCHEDULED, sms.getSms_status());
+        assertEquals(EntitiesHelper.DATETIME_SCHEDULED_2015, sms.getDatetimeScheduled());
+        assertEquals(EntitiesHelper.DATETIME_SCHEDULED_2014, sms.getDatetimeLastModified());
         assertEquals(false, sms.isTest());
     }
 }

@@ -1,1 +1,2 @@
 INSERT INTO user (name, passwd) VALUES ('amalio', 'e201994dca9320fc94336603b1cfc970');
+INSERT INTO sms (user_id, idSMSC, subid, msisdn, sender, text, status, datetime_inbound, datetime_lastmodified, datetime_scheduled, ackurl) VALUES (1, 'idSMSC1', 'subid1', '34656987415', 'sender', 'The text of message with an ñ', 6, '2014-12-27 10:30:00.0', '2014-12-27 10:30:00.0', '2015-12-27 10:30:00.0', 'http://www.anurl.com/ack');

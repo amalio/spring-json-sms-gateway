@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class EntitiesHelper {
     public static final long SMS_ID = 1;
-    public static final int USER_ID = 456;
+    public static final int USER_ID = 1;
     public static final String USER_NAME = "amalio";
     public static final String SENDER = "sender";
     public static final String MSISDN = "34656987415";

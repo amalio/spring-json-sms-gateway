@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Component
-public class SmsDaoHibernate implements SmsDao {
+public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     @Override
     public void insert(SMS sms) throws GatewayException {
         throw new NotImplementedException();
@@ -28,7 +28,7 @@ public class SmsDaoHibernate implements SmsDao {
 
     @Override
     public SMS getSMS(long id) throws GatewayException {
-        throw new NotImplementedException();
+        return (SMS) currentSession().get(SMS.class, id);
     }
 
     @Override
