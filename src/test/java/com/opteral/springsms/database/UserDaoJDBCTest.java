@@ -8,6 +8,7 @@ import com.github.springtestdbunit.dataset.ReplacementDataSetLoader;
 import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.model.User;
 import com.opteral.springsms.web.WebConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import javax.sql.DataSource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {WebConfig.class, RootConfig.class})

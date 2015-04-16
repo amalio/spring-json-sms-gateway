@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+
 public class SmsDaoJDBC extends abstractDao implements SmsDao {
 
     private static final String SELECT_SMS_BY_ID ="SELECT * FROM sms WHERE id = ?";

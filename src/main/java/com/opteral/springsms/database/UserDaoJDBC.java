@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-@Component
+
 public class UserDaoJDBC extends abstractDao implements UserDao  {
 
     private static final String GET_USER ="SELECT * FROM user WHERE name = ?";
