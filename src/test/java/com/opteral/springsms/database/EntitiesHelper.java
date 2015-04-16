@@ -37,10 +37,11 @@ public class EntitiesHelper {
         sms.setSender(SENDER);
         sms.setMsisdn(MSISDN);
         sms.setText(TEXT);
-        sms.setSms_status(SMS.SMS_Status.ACCEPTD);
+        sms.setSms_status(SMS.SMS_Status.SCHEDULED);
         sms.setSubid(SUBID);
         sms.setAckurl(ACKURL);
-        sms.setDatetimeScheduled(DATETIME_SCHEDULED_2014);
+        sms.setDatetimeScheduled(DATETIME_SCHEDULED_2015);
+        sms.setDatetimeLastModified(DATETIME_SCHEDULED_2014);
         sms.setTest(false);
 
         return sms;

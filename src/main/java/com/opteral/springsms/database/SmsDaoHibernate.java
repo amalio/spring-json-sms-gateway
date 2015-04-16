@@ -3,6 +3,7 @@ package com.opteral.springsms.database;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -27,7 +28,7 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     }
 
     @Override
-    public SMS getSMS(long id) throws GatewayException {
+    public SMS getSMS(long id)  {
         return (SMS) currentSession().get(SMS.class, id);
     }
 
@@ -43,6 +44,13 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
 
     @Override
     public SMS getSMSfromIdSMSC(String idSMSC) throws GatewayException {
-        throw new NotImplementedException();
+        try {
+            return (SMS) currentSession()
+                    .createCriteria(SMS.class)
+                    .add(Restrictions.eq("idSMSC", idSMSC))
+                    .list().get(0);
+        } catch (Exception e) {
+            throw new GatewayException("No SMS with idSMSC: "+idSMSC);
+        }
     }
 }
