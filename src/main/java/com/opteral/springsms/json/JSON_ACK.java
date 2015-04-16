@@ -24,7 +24,7 @@ public class JSON_ACK {
         this.id = sms.getId();
         this.subid = sms.getSubid();
         this.msisdn = sms.getMsisdn();
-        this.delivered = sms.getDatetimeLastModified();
+        this.delivered = new Timestamp(sms.getDatetimeLastModified().getTime());
         this.sms_status = sms.getSms_status();
     }
 

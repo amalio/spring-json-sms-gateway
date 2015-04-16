@@ -2,6 +2,7 @@ package com.opteral.springsms.database;
 
 import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.exceptions.GatewayException;
+import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import com.opteral.springsms.model.User;
 import org.junit.BeforeClass;
@@ -89,6 +90,24 @@ public class SmsDaoHibernateTest {
         assertEquals(2, lista.size());
         assertEquals("subid2", lista.get(0).getSubid());
         assertEquals("subid3", lista.get(1).getSubid());
+
+    }
+
+    @Test
+    @Transactional
+    public void updateStatusTest() throws Exception {
+
+        SMS sms = smsDaoHibernate.getSMS(1);
+        assertEquals(SMS.SMS_Status.SCHEDULED, sms.getSms_status());
+
+        ACK ack = new ACK();
+        ack.setIdSMSC("idSMSC1");
+        ack.setSms_status(SMS.SMS_Status.DELIVRD);
+        ack.setAckNow();
+        smsDaoHibernate.updateSMS_Status(ack);
+
+        sms = smsDaoHibernate.getSMS(1);
+        assertEquals(SMS.SMS_Status.DELIVRD, sms.getSms_status());
 
     }
 

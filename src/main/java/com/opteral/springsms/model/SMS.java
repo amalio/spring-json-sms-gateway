@@ -32,7 +32,9 @@ public class SMS {
 
 
     @Column(name = "datetime_lastmodified")
-    private Timestamp datetimeLastModified;
+    @Temporal(TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
+    private Date datetimeLastModified;
 
     @Column(name = "datetime_inbound", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -123,11 +125,11 @@ public class SMS {
         this.datetimeScheduled = datetimeScheduled;
     }
 
-    public Timestamp getDatetimeLastModified() {
+    public Date getDatetimeLastModified() {
         return datetimeLastModified;
     }
 
-    public void setDatetimeLastModified(Timestamp datetimeLastModified) {
+    public void setDatetimeLastModified(Date datetimeLastModified) {
         this.datetimeLastModified = datetimeLastModified;
     }
 

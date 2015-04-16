@@ -36,7 +36,9 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
 
     @Override
     public void updateSMS_Status(ACK ack) throws GatewayException {
-        throw new NotImplementedException();
+
+        SMS sms = getSMSfromIdSMSC(ack.getIdSMSC());
+        sms.setSms_status(ack.getSms_status());
     }
 
     @Override
