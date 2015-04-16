@@ -66,10 +66,10 @@ public class LoggerAOP {
         logger.info("SessionListener -> new session state :" + newState.toString());
     }
 
-    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSCImp.sendSMS(..))", returning="result")
-    public void onSubmitShortMessage2(Object result) {
+    @AfterReturning(pointcut ="execution(* com.opteral.springsms.smsc.SMSC.sendSMS(..))", returning="result")
+    public void onSubmitShortMessage(Object result) {
         if (!result.equals(""))
-            logger.info("SMSCImp -> Message submitted, message_id is " + result);
+            logger.info("SMSC -> Message submitted, message_id is " + result);
 
     }
 
