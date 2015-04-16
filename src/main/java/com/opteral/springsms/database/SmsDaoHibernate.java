@@ -16,7 +16,7 @@ import java.util.List;
 public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     @Override
     public void insert(SMS sms) throws GatewayException {
-        throw new NotImplementedException();
+        currentSession().save(sms);
     }
 
     @Override

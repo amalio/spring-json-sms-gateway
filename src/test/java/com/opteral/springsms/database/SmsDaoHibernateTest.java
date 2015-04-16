@@ -111,6 +111,21 @@ public class SmsDaoHibernateTest {
 
     }
 
+    @Test
+    @Transactional
+    public void insertSMSTest() throws Exception {
+
+        SMS sms = smsDaoHibernate.getSMS(6);
+        assertNull(sms);
+
+        sms = ArraySMS[1];
+        smsDaoHibernate.insert(sms);
+
+        sms = smsDaoHibernate.getSMS(6);
+        assertSMS(1, sms);
+
+    }
+
     private static void assertSMS(int expectedSMSIndex, SMS actual) {
         SMS expected = ArraySMS[expectedSMSIndex];
         assertNotNull(actual);
@@ -127,11 +142,14 @@ public class SmsDaoHibernateTest {
     }
 
 
-    private static SMS[] ArraySMS = new SMS[1];
+    private static SMS[] ArraySMS = new SMS[2];
     @BeforeClass
     public static void before() {
         SMS sms1= newSMS();
+        SMS sms2 = newSMS();
+        sms2.setSubid("subid20");
         ArraySMS[0] = sms1;
+        ArraySMS[1] = sms2;
 
     }
 
