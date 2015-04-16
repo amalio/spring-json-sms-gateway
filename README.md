@@ -2,6 +2,8 @@ SPRING JSON SMS Gateway
 =====================
 This project is a gateway for sending SMS messages based on Spring Framework. Take advantage of Spring MVC, Spring Security and Spring AOP features.
 
+The persistent layer has been switched to **JPA (Hibernate)**, for native JDBC checkout jdbc branch. 
+
 ## Features
 - [x] Ready for send SMS via SMSC with SMPP Protocol
 - [x] Authentication System
