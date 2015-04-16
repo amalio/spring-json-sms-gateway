@@ -34,8 +34,7 @@ public class ProcessorImpTest {
     @Before
     public void init()
     {
-        user = new User();
-        user.setId(10);
+        user = new User(10, "amalio");
 
         requestJSON = new RequestJSON();
         JSON_SMS jsonsms1 = new JSON_SMS();
