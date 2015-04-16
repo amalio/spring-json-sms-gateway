@@ -21,7 +21,12 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
 
     @Override
     public void update(SMS sms) throws GatewayException {
-        throw new NotImplementedException();
+        SMS onBD = getSMS(sms.getId());
+        onBD.setSubid(sms.getSubid());
+        onBD.setMsisdn(sms.getMsisdn());
+        onBD.setDatetimeScheduled(sms.getDatetimeScheduled());
+        onBD.setText(sms.getText());
+        onBD.setSender(sms.getSender());
     }
 
     @Override
