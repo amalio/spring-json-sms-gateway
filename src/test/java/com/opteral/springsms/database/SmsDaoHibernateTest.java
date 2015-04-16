@@ -13,6 +13,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import static com.opteral.springsms.database.EntitiesHelper.newSMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -70,6 +74,21 @@ public class SmsDaoHibernateTest {
         smsDaoHibernate.delete(sms);
         sms = smsDaoHibernate.getSMS(1);
         assertNull(sms);
+
+    }
+
+    @Test
+    @Transactional
+    public void getSMSFrofSend() throws Exception {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date date = formatter.parse("2015-01-01 10:30:00");
+
+        List<SMS> lista = smsDaoHibernate.getSMSForSend(new Date(date.getTime()));
+
+        assertEquals(2, lista.size());
+        assertEquals("subid2", lista.get(0).getSubid());
+        assertEquals("subid3", lista.get(1).getSubid());
 
     }
 

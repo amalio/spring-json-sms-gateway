@@ -3,11 +3,13 @@ package com.opteral.springsms.database;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -39,7 +41,10 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
 
     @Override
     public List<SMS> getSMSForSend(Date aFecha) throws GatewayException {
-        throw new NotImplementedException();
+        String queryString = "SELECT s.* FROM sms s WHERE status < :status AND (datetime_scheduled <= NOW() OR datetime_scheduled is NULL) ";
+        SQLQuery query = currentSession().createSQLQuery(queryString);
+        query.addEntity(SMS.class).setParameter("status", SMS.SMS_Status.ONSMSC.getValue());
+        return query.list();
     }
 
     @Override
