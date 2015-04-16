@@ -15,12 +15,12 @@ import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class, RootConfig.class})
+@ContextConfiguration(classes = { RootConfig.class})
 @ActiveProfiles("test")
 public class UserDaoHibernateTest {
 
     @Autowired
-    UserHibernateDaoHibernate userDaoHibernate;
+    UserDaoHibernate userDaoHibernate;
 
     @Test
     @Transactional

@@ -12,8 +12,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -21,6 +25,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 public class DataConfig {
 
     @Bean(name="dataSource")
@@ -70,4 +75,11 @@ public class DataConfig {
         }
     }
 
+    @Bean
+    public PlatformTransactionManager txManager(SessionFactory sessionFactory) throws Exception {
+        HibernateTransactionManager txManager = new HibernateTransactionManager(sessionFactory);
+        txManager.setNestedTransactionAllowed(true);
+
+        return txManager;
+    }
 }

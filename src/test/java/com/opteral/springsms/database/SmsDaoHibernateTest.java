@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class, RootConfig.class})
+@ContextConfiguration(classes = { RootConfig.class})
 @ActiveProfiles("test")
 public class SmsDaoHibernateTest {
 

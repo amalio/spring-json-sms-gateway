@@ -6,13 +6,16 @@ import com.opteral.springsms.model.SMS;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
+@Transactional
 public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     @Override
     public void insert(SMS sms) throws GatewayException {

@@ -5,10 +5,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-
-@Component
-public class UserHibernateDaoHibernate extends AbstractHibernateDao implements UserDao {
+@Repository
+@Transactional
+public class UserDaoHibernate extends AbstractHibernateDao implements UserDao {
 
 
     @Override
