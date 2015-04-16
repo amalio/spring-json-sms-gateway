@@ -3,7 +3,6 @@ package com.opteral.springsms.smsc;
 
 import com.opteral.springsms.sender.ACKSender;
 import com.opteral.springsms.database.SmsDao;
-import com.opteral.springsms.database.SmsDaoJDBC;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import org.jsmpp.bean.*;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class SMSCListener implements MessageReceiverListener {
 
     @Autowired
-    SmsDaoJDBC smsdao;
+    SmsDao smsdao;
 
     @Autowired
     ACKSender ackSender;

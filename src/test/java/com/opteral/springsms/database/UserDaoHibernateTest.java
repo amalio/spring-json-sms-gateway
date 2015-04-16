@@ -1,8 +1,10 @@
 package com.opteral.springsms.database;
 
+import com.opteral.springsms.config.DataConfig;
 import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.model.User;
 import com.opteral.springsms.web.WebConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestConfig.class, RootConfig.class})
+@ActiveProfiles("test")
 public class UserDaoHibernateTest {
 
     @Autowired

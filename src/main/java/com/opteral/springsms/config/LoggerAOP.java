@@ -84,14 +84,14 @@ public class LoggerAOP {
             logger.info("HttpGetSender -> ACK GET sended: "+result);
     }
 
-    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.SmsDaoJDBC.*(..))", throwing="error")
-    public void failsOnSMSDaoJDBC(Throwable error) {
-        logger.error("SmsDaoJDBC -> Failed: "+error.getMessage());
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.SmsDao.*(..))", throwing="error")
+    public void failsOnSMSDao(Throwable error) {
+        logger.error("SmsDaoHibernate -> Failed: "+error.getMessage());
     }
 
-    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.UserDaoJDBC.*(..))", throwing="error")
-    public void failsOnSMSUserJDBC(Throwable error) {
-        logger.error("SmsUserJDBC -> Failed: "+error.getMessage());
+    @AfterThrowing(pointcut ="execution(* com.opteral.springsms.database.UserDao.*(..))", throwing="error")
+    public void failsOnSMSUser(Throwable error) {
+        logger.error("UserDaoHibernate -> Failed: "+error.getMessage());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.opteral.springsms.config;
 
 import com.opteral.springsms.smsc.DeliveryReceiptProcesor;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,10 +12,13 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 public class DataConfig {
@@ -46,6 +50,24 @@ public class DataConfig {
     @Bean(name="jdbctemplate")
        public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
+    }
+
+
+    @Bean
+    public SessionFactory sessionFactoryBean(DataSource dataSource) {
+        try {
+            LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
+            lsfb.setDataSource(dataSource);
+            lsfb.setPackagesToScan("com.opteral.springsms.model");
+            Properties props = new Properties();
+            props.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
+            lsfb.setHibernateProperties(props);
+            lsfb.afterPropertiesSet();
+            SessionFactory object = lsfb.getObject();
+            return object;
+        } catch (IOException e) {
+            return null;
+        }
     }
 
 }

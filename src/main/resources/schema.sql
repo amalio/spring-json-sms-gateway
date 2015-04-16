@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS sms;
+
 CREATE TABLE user (id INTEGER auto_increment,
                      name VARCHAR(255) NOT NULL,
                      passwd VARCHAR(255) NOT NULL,
