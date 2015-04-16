@@ -54,6 +54,25 @@ public class SmsDaoHibernateTest {
         assertSMS(0,sms);
     }
 
+    @Test (expected = GatewayException.class)
+    @Transactional
+    public void getSMSTestFromIdSMSCException() throws Exception {
+
+        SMS sms = smsDaoHibernate.getSMSfromIdSMSC("badID");
+
+    }
+
+    @Test
+    @Transactional
+    public void deleteSMS() throws Exception {
+
+        SMS sms = smsDaoHibernate.getSMS(1);
+        smsDaoHibernate.delete(sms);
+        sms = smsDaoHibernate.getSMS(1);
+        assertNull(sms);
+
+    }
+
     private static void assertSMS(int expectedSMSIndex, SMS actual) {
         SMS expected = ArraySMS[expectedSMSIndex];
         assertNotNull(actual);

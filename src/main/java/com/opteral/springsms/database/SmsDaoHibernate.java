@@ -23,8 +23,8 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     }
 
     @Override
-    public void delete(SMS sms) throws GatewayException {
-        throw new NotImplementedException();
+    public void delete(SMS sms) {
+        currentSession().delete(sms);
     }
 
     @Override
