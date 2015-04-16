@@ -5,13 +5,10 @@ import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -30,6 +27,7 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
         onBD.setDatetimeScheduled(sms.getDatetimeScheduled());
         onBD.setText(sms.getText());
         onBD.setSender(sms.getSender());
+        onBD.setIdSMSC(sms.getIdSMSC());
     }
 
     @Override

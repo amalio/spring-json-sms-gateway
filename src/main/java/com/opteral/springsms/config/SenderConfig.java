@@ -2,7 +2,6 @@ package com.opteral.springsms.config;
 
 import com.opteral.springsms.sender.Sender;
 import com.opteral.springsms.smsc.SMPPSessionBean;
-import org.jsmpp.extra.SessionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

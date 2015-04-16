@@ -4,14 +4,10 @@ import com.opteral.springsms.config.ConfigValues;
 import org.jsmpp.bean.BindType;
 import org.jsmpp.bean.NumberingPlanIndicator;
 import org.jsmpp.bean.TypeOfNumber;
-import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.BindParameter;
 import org.jsmpp.session.MessageReceiverListener;
 import org.jsmpp.session.SMPPSession;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 

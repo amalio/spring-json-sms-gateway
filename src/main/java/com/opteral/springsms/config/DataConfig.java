@@ -1,21 +1,15 @@
 package com.opteral.springsms.config;
 
-import com.opteral.springsms.smsc.DeliveryReceiptProcesor;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -59,13 +53,32 @@ public class DataConfig {
 
 
     @Bean
-    public SessionFactory sessionFactoryBean(DataSource dataSource) {
+    @Profile("test")
+    public SessionFactory sessionFactoryBeanTest(DataSource dataSource) {
         try {
             LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
             lsfb.setDataSource(dataSource);
             lsfb.setPackagesToScan("com.opteral.springsms.model");
             Properties props = new Properties();
             props.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
+            lsfb.setHibernateProperties(props);
+            lsfb.afterPropertiesSet();
+            SessionFactory object = lsfb.getObject();
+            return object;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    @Bean
+    @Profile("default")
+    public SessionFactory sessionFactoryBean(DataSource dataSource) {
+        try {
+            LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
+            lsfb.setDataSource(dataSource);
+            lsfb.setPackagesToScan("com.opteral.springsms.model");
+            Properties props = new Properties();
+            props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
             lsfb.setHibernateProperties(props);
             lsfb.afterPropertiesSet();
             SessionFactory object = lsfb.getObject();

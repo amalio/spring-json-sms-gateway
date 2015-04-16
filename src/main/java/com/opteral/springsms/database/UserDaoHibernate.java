@@ -4,7 +4,6 @@ import com.opteral.springsms.model.User;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

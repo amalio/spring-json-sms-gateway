@@ -4,7 +4,6 @@ import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
-import com.opteral.springsms.model.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static com.opteral.springsms.database.EntitiesHelper.newSMS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { RootConfig.class})

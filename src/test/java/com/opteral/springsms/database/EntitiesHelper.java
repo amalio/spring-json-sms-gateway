@@ -2,13 +2,7 @@ package com.opteral.springsms.database;
 
 import com.opteral.springsms.model.SMS;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class EntitiesHelper {
     public static final long SMS_ID = 1;

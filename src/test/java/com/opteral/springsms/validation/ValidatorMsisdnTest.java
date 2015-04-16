@@ -2,8 +2,6 @@ package com.opteral.springsms.validation;
 
 
 import com.opteral.springsms.exceptions.ValidationException;
-import com.opteral.springsms.validation.Validator;
-import com.opteral.springsms.validation.ValidatorImp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

@@ -26,19 +26,17 @@ public class SMS {
     @Column(name = "status")
     private SMS_Status sms_status;
 
-
     @Column(name = "datetime_scheduled")
     private Timestamp datetimeScheduled;
 
+    @Column(name = "datetime_inbound", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datetimeInbound = new Date();
 
     @Column(name = "datetime_lastmodified")
     @Temporal(TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
     private Date datetimeLastModified;
-
-    @Column(name = "datetime_inbound", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date datetimeInbound = new Date();
 
     @Transient
     private boolean test;

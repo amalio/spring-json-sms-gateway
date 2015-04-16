@@ -3,7 +3,7 @@ package com.opteral.springsms.web;
 import com.opteral.springsms.Processor;
 import com.opteral.springsms.TestHelper;
 import com.opteral.springsms.config.RootConfig;
-import com.opteral.springsms.exceptions.GatewayException;;
+import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.json.JSON_SMS;
 import com.opteral.springsms.json.RequestJSON;
 import org.junit.Before;
@@ -26,9 +26,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

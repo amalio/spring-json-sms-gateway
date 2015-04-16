@@ -1,18 +1,10 @@
 package com.opteral.springsms.smsc;
 
 
-import com.opteral.springsms.config.RootConfig;
 import com.opteral.springsms.exceptions.GatewayException;
 import com.opteral.springsms.model.SMS;
-import org.apache.log4j.Logger;
-import org.jsmpp.InvalidResponseException;
-import org.jsmpp.PDUException;
 import org.jsmpp.bean.*;
-import org.jsmpp.extra.NegativeResponseException;
-import org.jsmpp.extra.ResponseTimeoutException;
-import org.jsmpp.session.SMPPSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
