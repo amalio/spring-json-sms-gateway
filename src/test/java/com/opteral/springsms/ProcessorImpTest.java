@@ -34,7 +34,7 @@ public class ProcessorImpTest {
     @Before
     public void init()
     {
-        user = new User(10, "amalio");
+        user = new User(1, "amalio");
 
         requestJSON = new RequestJSON();
         JSON_SMS jsonsms1 = new JSON_SMS();
@@ -71,7 +71,7 @@ public class ProcessorImpTest {
 
         ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
         verify(smsDaoMock, times(2)).insert(argument.capture());
-        assertEquals(10, argument.getValue().getUser_id());
+        assertEquals(1, argument.getValue().getUser_id());
 
 
 
@@ -93,7 +93,7 @@ public class ProcessorImpTest {
 
         ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
         verify(smsDaoMock, times(2)).update(argument.capture());
-        assertEquals(10, argument.getValue().getUser_id());
+        assertEquals(1, argument.getValue().getUser_id());
 
 
 
@@ -167,7 +167,7 @@ public class ProcessorImpTest {
 
         ArgumentCaptor<SMS> argument = ArgumentCaptor.forClass(SMS.class);
         verify(smsDaoMock, times(2)).delete(argument.capture());
-        assertEquals(10, argument.getValue().getUser_id());
+        assertEquals(1, argument.getValue().getUser_id());
 
 
 

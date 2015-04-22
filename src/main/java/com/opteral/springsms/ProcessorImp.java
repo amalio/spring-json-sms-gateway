@@ -57,6 +57,7 @@ public class ProcessorImp implements Processor {
     @Override
     public ResponseJSON delete(RequestJSON requestJSON) throws GatewayException {
         forDelete = true;
+        user = authentication.getUser();
         return new ResponseJSON(processList(requestJSON));
     }
 
