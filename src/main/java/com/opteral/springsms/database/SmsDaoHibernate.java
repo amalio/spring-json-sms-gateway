@@ -5,6 +5,8 @@ import com.opteral.springsms.model.ACK;
 import com.opteral.springsms.model.SMS;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,10 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
     @Override
     public void update(SMS sms) throws GatewayException {
         SMS onBD = getSMS(sms.getId());
+
+        if (onBD.getUser_id() != sms.getUser_id())
+            throw new InsufficientAuthenticationException("Sorry, this user is not the SMS owner");
+
         onBD.setSubid(sms.getSubid());
         onBD.setMsisdn(sms.getMsisdn());
         onBD.setDatetimeScheduled(sms.getDatetimeScheduled());
@@ -32,6 +38,11 @@ public class SmsDaoHibernate extends AbstractHibernateDao implements SmsDao {
 
     @Override
     public void delete(SMS sms) {
+        SMS onBD = getSMS(sms.getId());
+
+        if (onBD.getUser_id() != sms.getUser_id())
+            throw new InsufficientAuthenticationException("Sorry, this user is not the SMS owner");
+
         currentSession().delete(sms);
     }
 
